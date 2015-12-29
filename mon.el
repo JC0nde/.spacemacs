@@ -29,7 +29,10 @@
 (setq prelude-use-smooth-scrolling t)
 
 ;;No whitespace shit
-(setq prelude-whitespace nil)
+;;(setq prelude-whitespace nil)
+
+;;don't highlight the end of long lines
+(setq whitespace-line-column 99999)
 
 ;;Backups
 (setq vc-make-backup-files t)
@@ -54,7 +57,10 @@
 
 ;;Guru-mode
 (require 'guru-mode)
-(setq guru-warn-only nil)
+;;(setq guru-warn-only nil)
+
+;;enable arrow keys
+(setq prelude-guru nil)
 
 ;;Multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)

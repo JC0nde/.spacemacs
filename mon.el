@@ -23,7 +23,7 @@
 
 ;; install additional packages - add any to this list that you want to
 ;; be installed automatically
-(prelude-require-packages '(multiple-cursors ess emmet-mode))
+(prelude-require-packages '(multiple-cursors ess emmet-mode golden-ratio))
 
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
@@ -94,5 +94,17 @@
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 (add-hook 'web-mode-hook  'emmet-mode)
 (setq emmet-move-cursor-between-quotes t)
+
+;;golden-ratio
+(require 'golden-ratio)
+(golden-ratio-mode 1)
+
+;;disable helm resize for golden-ratio
+(require 'helm)
+(defun pl/helm-alive-p ()
+  (if (boundp 'helm-alive-p)
+      (symbol-value 'helm-alive-p)))
+
+(add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
 
 ;;; mon.el ends here

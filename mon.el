@@ -1,13 +1,8 @@
 ;;; mon.el --- Config Emacs.
-
 ;; This file is not part of GNU Emacs.
-
 ;;; Commentary:
-
 ;; Ma config avec Prelude.
-
 ;;; License:
-
 ;; <3
 
 ;;; Code:
@@ -58,7 +53,6 @@
 ;;Guru-mode
 (require 'guru-mode)
 ;;(setq guru-warn-only nil)
-
 ;;enable arrow keys
 (setq prelude-guru nil)
 

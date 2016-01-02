@@ -3,7 +3,7 @@
 ;;  |  __/ | | | | | (_| | (__\__ \
 ;; (_)___|_| |_| |_|\__,_|\___|___/
 ;;
-;;; mon.el --- Config Emacs.
+;;; config.el --- Config Emacs.
 ;; This file is not part of GNU Emacs.
 ;;; Commentary:
 ;; Ma config avec Prelude.
@@ -107,4 +107,4 @@
 
 (add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
 
-;;; mon.el ends here
+;;; config.el ends here

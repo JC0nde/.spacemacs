@@ -12,7 +12,7 @@
 
 ;;; Code:
 
-;;Add MELPA repository for packages
+;; Add MELPA repository for packages
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
@@ -25,13 +25,13 @@
 ;; be installed automatically
 (prelude-require-packages '(multiple-cursors ess emmet-mode golden-ratio))
 
-;;smooth scrolling
+;; smooth scrolling
 (setq prelude-use-smooth-scrolling t)
 
-;;don't highlight the end of long lines
+;; don't highlight the end of long lines
 (setq whitespace-line-column 99999)
 
-;;Backups
+;; Backups
 (setq vc-make-backup-files t)
 (setq version-control t
       kept-new-versions 10
@@ -49,29 +49,29 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
-;;Disable flyspell-mode
+;; Disable flyspell-mode
 (setq prelude-flyspell nil)
 
-;;Guru-mode
+;; Guru-mode
 (require 'guru-mode)
 ;;(setq guru-warn-only nil)
 ;;enable arrow keys
 (setq prelude-guru nil)
 
-;;Multiple-cursors
+;; Multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-
-;; Disable whitespace-mode when using web-mode
+;; Web-mode customizations
 (require 'web-mode)
 (setq web-mode-markup-indent-offset 4)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 4)
 (setq web-mode-disable-autocompletion t)
 (local-set-key (kbd "RET") 'newline-and-indent)
+;; Disable whitespace-mode when using web-mode
 (add-hook 'web-mode-hook (lambda () (whitespace-mode -1)))
 (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode)) ;; - For Drupal
 (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . php-mode)) ;; - For Drupal
@@ -84,18 +84,18 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
 
-;;Emmet
+;; Emmet
 (require 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 (add-hook 'web-mode-hook  'emmet-mode)
 (setq emmet-move-cursor-between-quotes t)
 
-;;golden-ratio
+;; Golden-ratio
 (require 'golden-ratio)
 (golden-ratio-mode 1)
 
-;;disable helm resize for golden-ratio
+;; Disable helm resize for golden-ratio
 (require 'helm)
 (defun pl/helm-alive-p ()
   (if (boundp 'helm-alive-p)

@@ -28,9 +28,6 @@
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
 
-;;No whitespace shit
-;;(setq prelude-whitespace nil)
-
 ;;don't highlight the end of long lines
 (setq whitespace-line-column 99999)
 
@@ -69,6 +66,12 @@
 
 
 ;; Disable whitespace-mode when using web-mode
+(require 'web-mode)
+(setq web-mode-markup-indent-offset 4)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 4)
+(setq web-mode-disable-autocompletion t)
+(local-set-key (kbd "RET") 'newline-and-indent)
 (add-hook 'web-mode-hook (lambda () (whitespace-mode -1)))
 (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode)) ;; - For Drupal
 (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . php-mode)) ;; - For Drupal
@@ -81,13 +84,6 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
 
-;; Web-mode
-(require 'web-mode)
-(setq web-mode-markup-indent-offset 4)
-(setq web-mode-css-indent-offset 2)
-(setq web-mode-code-indent-offset 4)
-(setq web-mode-disable-autocompletion t)
-(local-set-key (kbd "RET") 'newline-and-indent)
 ;;Emmet
 (require 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes

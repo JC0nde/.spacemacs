@@ -103,4 +103,12 @@
 
 (add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
 
+; go to the last change
+(package-require 'goto-chg)
+(global-set-key [(control .)] 'goto-last-change)
+; M-. can conflict with etags tag search. But C-. can get overwritten
+; by flyspell-auto-correct-word. And goto-last-change needs a really
+; fast key.
+;(global-set-key [(meta .)] 'goto-last-change)
+
 ;;; config.el ends here

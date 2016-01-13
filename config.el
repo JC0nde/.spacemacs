@@ -32,9 +32,8 @@
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
 
-;;No whitespace shit
+;;No whitespaces
 ;;(setq prelude-whitespace nil)
-
 ;;don't highlight the end of long lines
 (setq whitespace-line-column 99999)
 

@@ -32,6 +32,9 @@
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
 
+;; No scroll bar
+(scroll-bar-mode -1)
+
 ;;No whitespaces
 ;;(setq prelude-whitespace nil)
 ;;don't highlight the end of long lines

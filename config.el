@@ -1,4 +1,4 @@
-;;; mon.el --- Config Emacs.
+;;; config.el --- Config Emacs.
 
 ;; This file is not part of GNU Emacs.
 
@@ -127,4 +127,4 @@
 ;; C-h => Backspace
 (keyboard-translate ?\C-h ?\C-?)
 
-;;; mon.el ends here
+;;; config.el ends here

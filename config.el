@@ -124,4 +124,7 @@
 (defun my-goto-match-beginning ()
   (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
   
+;; C-h => Backspace
+(keyboard-translate ?\C-h ?\C-?)
+
 ;;; mon.el ends here

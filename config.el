@@ -126,5 +126,9 @@
   
 ;; C-h => Backspace
 (keyboard-translate ?\C-h ?\C-?)
+;; M-h => backward-kill-word
+(global-set-key (kbd "M-h" ) 'backward-kill-word)
+;; M-h => mark paragraph
+(global-set-key (kbd "M-d" ) 'mark-paragraph)
 
 ;;; config.el ends here

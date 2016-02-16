@@ -35,6 +35,8 @@
 ;; No scroll bar
 (scroll-bar-mode -1)
 
+(global-linum-mode t)
+
 ;;No whitespaces
 ;;(setq prelude-whitespace nil)
 ;;don't highlight the end of long lines

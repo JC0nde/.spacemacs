@@ -125,4 +125,8 @@
 ;; M-h => mark paragraph
 (global-set-key (kbd "M-d" ) 'mark-paragraph)
 
+;; Invoke M-x without the Alt key
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-c\C-m" 'execute-extended-command)
+
 ;;; config.el ends here

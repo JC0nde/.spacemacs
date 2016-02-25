@@ -60,6 +60,9 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
+;; undo
+(global-set-key (kbd "C-z") 'undo) 
+
 ;;Guru-mode
 (require 'guru-mode)
 ;;(setq guru-warn-only nil)

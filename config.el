@@ -134,4 +134,7 @@
 
 (defalias 'qrr 'query-replace-regexp)
 
+;; make both fringes 4 pixels wide
+(fringe-mode 4)
+
 ;;; config.el ends here

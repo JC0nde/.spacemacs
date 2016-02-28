@@ -125,8 +125,8 @@
 (keyboard-translate ?\C-h ?\C-?)
 ;; M-h => backward-kill-word
 (global-set-key (kbd "M-h" ) 'backward-kill-word)
-;; M-h => mark paragraph
-(global-set-key (kbd "M-d" ) 'mark-paragraph)
+;; M-<DEL> => mark paragraph
+(global-set-key (kbd "M-<DEL>" ) 'mark-paragraph)
 
 ;; Invoke M-x without the Alt key
 (global-set-key "\C-x\C-m" 'execute-extended-command)

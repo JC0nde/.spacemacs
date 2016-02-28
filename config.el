@@ -137,4 +137,11 @@
 ;; make both fringes 4 pixels wide
 (fringe-mode 4)
 
+;; scratch buffer en web-mode
+(setq initial-major-mode 'web-mode)
+(setq initial-scratch-message "\
+<!-- This buffer is for notes you don't want to save, and for HTML/CSS/JS/PHP code.
+     If you want to create a file, visit that file with C-x C-f,
+     then enter the text in that file's own buffer. -->")
+
 ;;; config.el ends here

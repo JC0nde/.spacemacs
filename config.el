@@ -37,6 +37,8 @@
 
 (global-linum-mode t)
 
+(setq next-line-add-newlines t)
+
 ;;No whitespaces
 ;;(setq prelude-whitespace nil)
 ;;don't highlight the end of long lines

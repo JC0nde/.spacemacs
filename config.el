@@ -144,9 +144,12 @@
 
 (defalias 'qrr 'query-replace-regexp)
 
-
 ;; scratch buffer en web-mode
 (setq initial-major-mode 'web-mode)
 (setq initial-scratch-message nil)
 
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+        "Prevent annoying \"Active processes exist\" query when you quit Emacs."
+        (flet ((process-list ())) ad-do-it))
+        
 ;;; config.el ends here

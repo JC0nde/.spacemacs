@@ -106,6 +106,14 @@
 (add-hook 'web-mode-hook  'emmet-mode)
 (setq emmet-move-cursor-between-quotes t)
 
+;; This works a little better if isearch puts you at the start of the search, not the end:
+(add-hook 'isearch-mode-end-hook 'my-goto-match-beginning)
+(defun my-goto-match-beginning ()
+  (when isearch-forward (goto-char isearch-other-end)))
+
+(defun my-goto-match-beginning ()
+  (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
+  
 ;;golden-ratio
 (require 'golden-ratio)
 (golden-ratio-mode 1)

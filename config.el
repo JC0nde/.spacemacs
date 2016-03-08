@@ -152,4 +152,6 @@
         "Prevent annoying \"Active processes exist\" query when you quit Emacs."
         (flet ((process-list ())) ad-do-it))
         
+(global-set-key (kbd "M-i") 'ido-goto-symbol)
+        
 ;;; config.el ends here

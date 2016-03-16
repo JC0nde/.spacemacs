@@ -39,6 +39,8 @@
 
 (setq next-line-add-newlines t)
 
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
 ;;No whitespaces
 ;;(setq prelude-whitespace nil)
 ;;don't highlight the end of long lines

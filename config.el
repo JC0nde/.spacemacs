@@ -155,5 +155,7 @@
         (flet ((process-list ())) ad-do-it))
         
 (global-set-key (kbd "M-i") 'imenu)
+
+(key-chord-define-global ";;" "\C-e;")
         
 ;;; config.el ends here

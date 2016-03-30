@@ -39,8 +39,6 @@
 
 (setq next-line-add-newlines t)
 
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
-
 ;;No whitespaces
 ;;(setq prelude-whitespace nil)
 ;;don't highlight the end of long lines
@@ -79,28 +77,8 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
-
-;; Disable whitespace-mode when using web-mode
-(add-hook 'web-mode-hook (lambda () (whitespace-mode -1)))
-(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode)) ;; - For Drupal
-(add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . php-mode)) ;; - For Drupal
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
-
-;; Web-mode
-(require 'web-mode)
-(setq web-mode-markup-indent-offset 4)
-(setq web-mode-css-indent-offset 2)
-(setq web-mode-code-indent-offset 4)
-(setq web-mode-disable-autocompletion t)
-(local-set-key (kbd "RET") 'newline-and-indent)
 ;;Emmet
 (require 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
@@ -115,18 +93,6 @@
 
 (defun my-goto-match-beginning ()
   (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
-  
-;;golden-ratio
-(require 'golden-ratio)
-(golden-ratio-mode 1)
-
-;;disable helm resize for golden-ratio
-(require 'helm)
-(defun pl/helm-alive-p ()
-  (if (boundp 'helm-alive-p)
-      (symbol-value 'helm-alive-p)))
-
-(add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
 
 ;; go to the last change
 (require 'goto-chg)
@@ -155,7 +121,5 @@
         (flet ((process-list ())) ad-do-it))
         
 (global-set-key (kbd "M-i") 'imenu)
-
-(key-chord-define-global ";;" "\C-e;")
         
 ;;; config.el ends here

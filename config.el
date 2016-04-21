@@ -127,5 +127,11 @@
         (flet ((process-list ())) ad-do-it))
         
 (global-set-key (kbd "M-i") 'imenu)
+
+;; makes backspace and C-d erase all consecutive white space in a given direction.
+(unless (fboundp 'hungry-delete-mode)
+  (package-install 'hungry-delete))
+(require 'hungry-delete)
+(global-hungry-delete-mode)
         
 ;;; config.el ends here

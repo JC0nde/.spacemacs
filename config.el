@@ -134,7 +134,7 @@
 (require 'hungry-delete)
 (global-hungry-delete-mode)
 
-;;Right meta-modifier-twick for IOS
+;;Right meta-modifier-tweak for IOS
 (setq ns-right-alternate-modifier 'none)
         
 ;;; config.el ends here

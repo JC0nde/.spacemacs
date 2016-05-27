@@ -136,5 +136,15 @@
 
 ;;Right meta-modifier-tweak for IOS
 (setq ns-right-alternate-modifier 'none)
+
+;; Go to next parenthesis
+(defun goto-match-paren (arg)
+  "Go to the matching parenthesis ( ARG ) if on parenthesis, otherwise insert %.
+vi style of % jumping to matching brace."
+  (interactive "p")
+  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
+        (t (self-insert-command (or arg 1)))))
+(global-set-key (kbd "C-%") 'goto-match-paren)
         
 ;;; config.el ends here

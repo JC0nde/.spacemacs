@@ -1,11 +1,5 @@
 ;;; config.el --- Config Emacs.
-;;
-;;    ___ _ __ ___   __ _  ___ ___
-;;   / _ \ '_ ` _ \ / _` |/ __/ __|
-;;  |  __/ | | | | | (_| | (__\__ \
-;; (_)___|_| |_| |_|\__,_|\___|___/
-;;
-;;
+
 ;; This file is not part of GNU Emacs.
 
 ;;; Commentary:
@@ -41,14 +35,15 @@
 ;; No scroll bar
 (scroll-bar-mode -1)
 
+;;linum t
 (global-linum-mode t)
 
-(setq next-line-add-newlines t)
+;; Disable flyspell-mode
+(setq prelude-flyspell nil)
 
 ;;No whitespaces
-;;(setq prelude-whitespace nil)
-;;don't highlight the end of long lines
-(setq whitespace-line-column 99999)
+(setq prelude-whitespace nil)
+
 
 ;;Backups
 (setq vc-make-backup-files t)
@@ -68,8 +63,9 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
+
 ;; undo
-(global-set-key (kbd "C-z") 'undo) 
+(global-set-key (kbd "C-z") 'undo)
 
 ;;Guru-mode
 (require 'guru-mode)
@@ -83,7 +79,6 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
 ;;Emmet
 (require 'emmet-mode)
@@ -92,19 +87,11 @@
 (add-hook 'web-mode-hook  'emmet-mode)
 (setq emmet-move-cursor-between-quotes t)
 
-;; This works a little better if isearch puts you at the start of the search, not the end:
-(add-hook 'isearch-mode-end-hook 'my-goto-match-beginning)
-(defun my-goto-match-beginning ()
-  (when isearch-forward (goto-char isearch-other-end)))
-
-(defun my-goto-match-beginning ()
-  (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
-
 ;; go to the last change
 (require 'goto-chg)
 (global-set-key [(control ?.)] 'goto-last-change)
 (global-set-key [(control ?,)] 'goto-last-change-reverse)
-  
+
 ;; C-h => Backspace
 (keyboard-translate ?\C-h ?\C-?)
 ;; M-h => backward-kill-word
@@ -112,39 +99,22 @@
 ;; M-<DEL> => mark paragraph
 (global-set-key (kbd "M-<DEL>" ) 'mark-paragraph)
 
-;; Invoke M-x without the Alt key
-(global-set-key "\C-x\C-m" 'execute-extended-command)
-(global-set-key "\C-c\C-m" 'execute-extended-command)
-
 (defalias 'qrr 'query-replace-regexp)
 
-;; scratch buffer en web-mode
-(setq initial-major-mode 'web-mode)
-(setq initial-scratch-message nil)
+;; This works a little better if isearch puts you at the start of the search, not the end:
+(add-hook 'isearch-mode-end-hook 'my-goto-match-beginning)
+(defun my-goto-match-beginning ()
+  "."
+  (when isearch-forward (goto-char isearch-other-end)))
 
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-        "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-        (flet ((process-list ())) ad-do-it))
-        
-(global-set-key (kbd "M-i") 'imenu)
+(defun my-goto-match-beginning ()
+  "."
+  (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
 
-;; makes backspace and C-d erase all consecutive white space in a given direction.
-(unless (fboundp 'hungry-delete-mode)
-  (package-install 'hungry-delete))
-(require 'hungry-delete)
-(global-hungry-delete-mode)
+(setq tramp-default-method "ssh")
 
-;;Right meta-modifier-tweak for IOS
-(setq ns-right-alternate-modifier 'none)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(key-chord-define-global "xx" 'helm-M-x)
+(key-chord-define-global "yy" 'helm-show-kill-ring)
 
-;; Go to next parenthesis
-(defun goto-match-paren (arg)
-  "Go to the matching parenthesis ( ARG ) if on parenthesis, otherwise insert %.
-vi style of % jumping to matching brace."
-  (interactive "p")
-  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
-        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
-        (t (self-insert-command (or arg 1)))))
-(global-set-key (kbd "C-%") 'goto-match-paren)
-        
 ;;; config.el ends here

@@ -68,9 +68,6 @@
 (global-set-key (kbd "C-z") 'undo)
 
 ;;Guru-mode
-(require 'guru-mode)
-;;(setq guru-warn-only nil)
-
 ;;enable arrow keys
 (setq prelude-guru nil)
 
@@ -79,6 +76,10 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+
 
 ;;Emmet
 (require 'emmet-mode)
@@ -105,10 +106,7 @@
 (add-hook 'isearch-mode-end-hook 'my-goto-match-beginning)
 (defun my-goto-match-beginning ()
   "."
-  (when isearch-forward (goto-char isearch-other-end)))
-
-(defun my-goto-match-beginning ()
-  "."
+  (when isearch-forward (goto-char isearch-other-end))
   (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
 
 (setq tramp-default-method "ssh")

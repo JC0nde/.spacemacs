@@ -114,5 +114,12 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (key-chord-define-global "xx" 'helm-M-x)
 (key-chord-define-global "yy" 'helm-show-kill-ring)
+;; Skip files in dired  
+(progn
+  (setq dired-omit-verbose nil)
+  ;; toggle `dired-omit-mode' with C-x M-o
+  (add-hook 'dired-mode-hook #'dired-omit-mode)
+  (setq dired-omit-files
+        (concat dired-omit-files "\\|^.DS_STORE$\\|^.projectile$")))
 
 ;;; config.el ends here

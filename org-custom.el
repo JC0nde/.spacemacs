@@ -1294,6 +1294,64 @@ Late deadlines first, then scheduled, then non-late deadlines"
 ;; Return follow links
 (setq org-return-follows-link t)
 
+;; Remove indentation on tags view
+(setq org-tags-match-list-sublevels t)
+
+;; Agenda persistent filters
+(setq org-agenda-persistent-filter t)
+
+;; Remove multiple state change log from agenda
+(setq org-agenda-skip-additional-timestamps-same-entry t)
+
+;; system settings for file-application selection
+(setq org-file-apps (quote ((auto-mode . emacs)
+                            ("\\.mm\\'" . system)
+                            ("\\.x?html?\\'" . system)
+                            ("\\.pdf\\'" . system))))
+
+;; Overwrite the current window with the agenda
+(setq org-agenda-window-setup 'current-window)
+
+;; Delete ids when cloning
+(setq org-clone-delete-id t)
+
+(setq org-cycle-include-plain-lists t)
+
+;; NEXT is for tasks
+(defun bh/mark-next-parent-tasks-todo ()
+  "Visit each parent task and change NEXT states to TODO"
+  (let ((mystate (or (and (fboundp 'org-state)
+                          state)
+                     (nth 2 (org-heading-components)))))
+    (when mystate
+      (save-excursion
+        (while (org-up-heading-safe)
+          (when (member (nth 2 (org-heading-components)) (list "NEXT"))
+            (org-todo "TODO")))))))
+
+(add-hook 'org-after-todo-state-change-hook 'bh/mark-next-parent-tasks-todo 'append)
+(add-hook 'org-clock-in-hook 'bh/mark-next-parent-tasks-todo 'append)
+
+;;Startup in folded view.
+(setq org-startup-folded t)
+
+(setq org-src-preserve-indentation nil)
+(setq org-edit-src-content-indentation 0)
+
+(setq org-catch-invisible-edits 'error)
+
+;; UTF8
+(setq org-export-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-charset-priority 'unicode)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
+;; Clock duration to hours
+(setq org-time-clocksum-format
+      '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
+
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
 
 
 (provide 'org-custom.el)

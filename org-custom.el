@@ -46,9 +46,14 @@
 (if (boundp 'org-user-agenda-files)
     (setq org-agenda-files org-user-agenda-files)
   (setq org-agenda-files (quote ("~/jonathan/org"
-                                 "~/jonathan/org/organizer.org"
                                  "~/jonathan/org/refile.org"
-                                 "~/jonathan/org/portfolio.org"))))
+                                 "~/jonathan/org/journal.org"
+                                 "~/jonathan/org/todo.org"
+                                 "~/jonathan/org/portfolio.org"
+                                 "~/jonathan/org/independant.org"
+                                 "~/jonathan/org/clients"
+                                 "~/jonathan/org/clients/mali.org"))))
+
 ;; Todo keywords
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")

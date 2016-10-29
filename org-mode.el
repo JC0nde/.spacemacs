@@ -1,4 +1,4 @@
-;;; org-mode.el --- Org-mode setup to organize my evil plans
+;;; org-custom.el --- Org-mode setup to organize my evil plans
 ;;
 ;; Copyright © 2016 Jonathan Conde
 ;;
@@ -182,32 +182,32 @@
 
 (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
 
-; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+                                        ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
 
-; Use full outline paths for refile targets - we file directly with IDO
+                                        ; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
 
-; Targets complete directly with IDO
+                                        ; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
 
-; Allow refile to create parent tasks with confirmation
+                                        ; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-; Use IDO for both buffer and file completion and ido-everywhere to t
+                                        ; Use IDO for both buffer and file completion and ido-everywhere to t
 (setq org-completion-use-ido t)
 (setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
 (ido-mode (quote both))
-; Use the current window when visiting files and buffers with ido
+                                        ; Use the current window when visiting files and buffers with ido
 (setq ido-default-file-method 'selected-window)
 (setq ido-default-buffer-method 'selected-window)
-; Use the current window for indirect buffer display
+                                        ; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
 ;;;; Refile settings
-; Exclude DONE state tasks from refile targets
+                                        ; Exclude DONE state tasks from refile targets
 (defun bh/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -378,7 +378,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-      ; Find the tags on the current task
+                                        ; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -454,9 +454,9 @@ A prefix arg forces clock in of the default task."
 
 (setq org-agenda-clock-consistency-checks
       (quote (:max-duration "4:00"
-              :min-duration 0
-              :max-gap 0
-              :gap-ok-around ("4:00"))))
+                            :min-duration 0
+                            :max-gap 0
+                            :gap-ok-around ("4:00"))))
 
 ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
 (setq org-clock-out-remove-zero-time-clocks t)
@@ -465,18 +465,18 @@ A prefix arg forces clock in of the default task."
 (setq org-agenda-clockreport-parameter-plist
       (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80)))
 
-; Set default column view headings: Task Effort Clock_Summary
+                                        ; Set default column view headings: Task Effort Clock_Summary
 (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
 
-; global Effort estimate values
-; global STYLE property values for completion
+                                        ; global Effort estimate values
+                                        ; global STYLE property values for completion
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 
 ;; Agenda log mode items to display (closed and state changes by default)
 (setq org-agenda-log-mode-items (quote (closed state)))
 
-; Tags with fast selection keys
+                                        ; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
                             ("@office" . ?o)
@@ -495,10 +495,10 @@ A prefix arg forces clock in of the default task."
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
-; Allow setting single tags without the menu
+                                        ; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
-; For tag searches ignore tasks with scheduled and deadline dates
+                                        ; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
 
 ;;(require 'bbdb)
@@ -824,11 +824,11 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 (setq org-alphabetical-lists t)
 
-; I'm lazy and don't want to remember the name of the project to publish when I modify
-; a file that is part of a project.  So this function saves the file, and publishes
-; the project that includes this file
-;
-; It's bound to C-S-F12 so I just edit and hit C-S-F12 when I'm done and move on to the next thing
+                                        ; I'm lazy and don't want to remember the name of the project to publish when I modify
+                                        ; a file that is part of a project.  So this function saves the file, and publishes
+                                        ; the project that includes this file
+                                        ;
+                                        ; It's bound to C-S-F12 so I just edit and hit C-S-F12 when I'm done and move on to the next thing
 (defun bh/save-then-publish (&optional force)
   (interactive "P")
   (save-buffer)
@@ -872,129 +872,129 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 ;;
 ;; sblk - Generic block #+begin_FOO .. #+end_FOO
 (define-skeleton skel-org-block
-"Insert an org block, querying for type."
-"Type: "
-"#+begin_" str "\n"
-_ - \n
-"#+end_" str "\n")
+  "Insert an org block, querying for type."
+  "Type: "
+  "#+begin_" str "\n"
+  _ - \n
+  "#+end_" str "\n")
 
 (define-abbrev org-mode-abbrev-table "sblk" "" 'skel-org-block)
 
 ;; splantuml - PlantUML Source block
 (define-skeleton skel-org-block-plantuml
-"Insert a org plantuml block, querying for filename."
-"File (no extension): "
-"#+begin_src plantuml :file " str ".png :cache yes\n"
-_ - \n
-"#+end_src\n")
+  "Insert a org plantuml block, querying for filename."
+  "File (no extension): "
+  "#+begin_src plantuml :file " str ".png :cache yes\n"
+  _ - \n
+  "#+end_src\n")
 
 (define-abbrev org-mode-abbrev-table "splantuml" "" 'skel-org-block-plantuml)
 
 (define-skeleton skel-org-block-plantuml-activity
-"Insert a org plantuml block, querying for filename."
-"File (no extension): "
-"#+begin_src plantuml :file " str "-act.png :cache yes :tangle " str "-act.txt\n"
-(bh/plantuml-reset-counters)
-"@startuml\n"
-"skinparam activity {\n"
-"BackgroundColor<<New>> Cyan\n"
-"}\n\n"
-"title " str " - \n"
-"note left: " str "\n"
-"(*) --> \"" str "\"\n"
-"--> (*)\n"
-_ - \n
-"@enduml\n"
-"#+end_src\n")
+  "Insert a org plantuml block, querying for filename."
+  "File (no extension): "
+  "#+begin_src plantuml :file " str "-act.png :cache yes :tangle " str "-act.txt\n"
+  (bh/plantuml-reset-counters)
+  "@startuml\n"
+  "skinparam activity {\n"
+  "BackgroundColor<<New>> Cyan\n"
+  "}\n\n"
+  "title " str " - \n"
+  "note left: " str "\n"
+  "(*) --> \"" str "\"\n"
+  "--> (*)\n"
+  _ - \n
+  "@enduml\n"
+  "#+end_src\n")
 
 (defvar bh/plantuml-if-count 0)
 
 (defun bh/plantuml-if ()
-(incf bh/plantuml-if-count)
-(number-to-string bh/plantuml-if-count))
+  (incf bh/plantuml-if-count)
+  (number-to-string bh/plantuml-if-count))
 
 (defvar bh/plantuml-loop-count 0)
 
 (defun bh/plantuml-loop ()
-(incf bh/plantuml-loop-count)
-(number-to-string bh/plantuml-loop-count))
+  (incf bh/plantuml-loop-count)
+  (number-to-string bh/plantuml-loop-count))
 
 (defun bh/plantuml-reset-counters ()
-(setq bh/plantuml-if-count 0
-bh/plantuml-loop-count 0)
-"")
+  (setq bh/plantuml-if-count 0
+        bh/plantuml-loop-count 0)
+  "")
 
 (define-abbrev org-mode-abbrev-table "sact" "" 'skel-org-block-plantuml-activity)
 
 (define-skeleton skel-org-block-plantuml-activity-if
-"Insert a org plantuml block activity if statement"
-""
-"if \"\" then\n"
-"  -> [condition] ==IF" (setq ifn (bh/plantuml-if)) "==\n"
-"  --> ==IF" ifn "M1==\n"
-"  -left-> ==IF" ifn "M2==\n"
-"else\n"
-"end if\n"
-"--> ==IF" ifn "M2==")
+  "Insert a org plantuml block activity if statement"
+  ""
+  "if \"\" then\n"
+  "  -> [condition] ==IF" (setq ifn (bh/plantuml-if)) "==\n"
+  "  --> ==IF" ifn "M1==\n"
+  "  -left-> ==IF" ifn "M2==\n"
+  "else\n"
+  "end if\n"
+  "--> ==IF" ifn "M2==")
 
 (define-abbrev org-mode-abbrev-table "sif" "" 'skel-org-block-plantuml-activity-if)
 
 (define-skeleton skel-org-block-plantuml-activity-for
-"Insert a org plantuml block activity for statement"
-"Loop for each: "
-"--> ==LOOP" (setq loopn (bh/plantuml-loop)) "==\n"
-"note left: Loop" loopn ": For each " str "\n"
-"--> ==ENDLOOP" loopn "==\n"
-"note left: Loop" loopn ": End for each " str "\n" )
+  "Insert a org plantuml block activity for statement"
+  "Loop for each: "
+  "--> ==LOOP" (setq loopn (bh/plantuml-loop)) "==\n"
+  "note left: Loop" loopn ": For each " str "\n"
+  "--> ==ENDLOOP" loopn "==\n"
+  "note left: Loop" loopn ": End for each " str "\n" )
 
 (define-abbrev org-mode-abbrev-table "sfor" "" 'skel-org-block-plantuml-activity-for)
 
 (define-skeleton skel-org-block-plantuml-sequence
-"Insert a org plantuml activity diagram block, querying for filename."
-"File appends (no extension): "
-"#+begin_src plantuml :file " str "-seq.png :cache yes :tangle " str "-seq.txt\n"
-"@startuml\n"
-"title " str " - \n"
-"actor CSR as \"Customer Service Representative\"\n"
-"participant CSMO as \"CSM Online\"\n"
-"participant CSMU as \"CSM Unix\"\n"
-"participant NRIS\n"
-"actor Customer"
-_ - \n
-"@enduml\n"
-"#+end_src\n")
+  "Insert a org plantuml activity diagram block, querying for filename."
+  "File appends (no extension): "
+  "#+begin_src plantuml :file " str "-seq.png :cache yes :tangle " str "-seq.txt\n"
+  "@startuml\n"
+  "title " str " - \n"
+  "actor CSR as \"Customer Service Representative\"\n"
+  "participant CSMO as \"CSM Online\"\n"
+  "participant CSMU as \"CSM Unix\"\n"
+  "participant NRIS\n"
+  "actor Customer"
+  _ - \n
+  "@enduml\n"
+  "#+end_src\n")
 
 (define-abbrev org-mode-abbrev-table "sseq" "" 'skel-org-block-plantuml-sequence)
 
 ;; sdot - Graphviz DOT block
 (define-skeleton skel-org-block-dot
-"Insert a org graphviz dot block, querying for filename."
-"File (no extension): "
-"#+begin_src dot :file " str ".png :cache yes :cmdline -Kdot -Tpng\n"
-"graph G {\n"
-_ - \n
-"}\n"
-"#+end_src\n")
+  "Insert a org graphviz dot block, querying for filename."
+  "File (no extension): "
+  "#+begin_src dot :file " str ".png :cache yes :cmdline -Kdot -Tpng\n"
+  "graph G {\n"
+  _ - \n
+  "}\n"
+  "#+end_src\n")
 
 (define-abbrev org-mode-abbrev-table "sdot" "" 'skel-org-block-dot)
 
 ;; sditaa - Ditaa source block
 (define-skeleton skel-org-block-ditaa
-"Insert a org ditaa block, querying for filename."
-"File (no extension): "
-"#+begin_src ditaa :file " str ".png :cache yes\n"
-_ - \n
-"#+end_src\n")
+  "Insert a org ditaa block, querying for filename."
+  "File (no extension): "
+  "#+begin_src ditaa :file " str ".png :cache yes\n"
+  _ - \n
+  "#+end_src\n")
 
 (define-abbrev org-mode-abbrev-table "sditaa" "" 'skel-org-block-ditaa)
 
 ;; selisp - Emacs Lisp source block
 (define-skeleton skel-org-block-elisp
-"Insert a org emacs-lisp block"
-""
-"#+begin_src emacs-lisp\n"
-_ - \n
-"#+end_src\n")
+  "Insert a org emacs-lisp block"
+  ""
+  "#+begin_src emacs-lisp\n"
+  _ - \n
+  "#+end_src\n")
 
 (define-abbrev org-mode-abbrev-table "selisp" "" 'skel-org-block-elisp)
 
@@ -1117,13 +1117,13 @@ so change the default 'F' binding in the agenda to allow both"
   (let (num-project-left current-project)
     (unless (marker-position org-agenda-restrict-begin)
       (goto-char (point-min))
-      ; Clear all of the existing markers on the list
+                                        ; Clear all of the existing markers on the list
       (while bh/project-list
         (set-marker (pop bh/project-list) nil))
       (re-search-forward "Tasks to Refile")
       (forward-visible-line 1))
 
-    ; Build a new project marker list
+                                        ; Build a new project marker list
     (unless bh/project-list
       (while (< (point) (point-max))
         (while (and (< (point) (point-max))
@@ -1136,13 +1136,13 @@ so change the default 'F' binding in the agenda to allow both"
           (add-to-list 'bh/project-list (copy-marker (org-get-at-bol 'org-hd-marker)) 'append))
         (forward-visible-line 1)))
 
-    ; Pop off the first marker on the list and display
+                                        ; Pop off the first marker on the list and display
     (setq current-project (pop bh/project-list))
     (when current-project
       (org-with-point-at current-project
         (setq bh/hide-scheduled-and-waiting-next-tasks nil)
         (bh/narrow-to-project))
-      ; Remove the marker
+                                        ; Remove the marker
       (setq current-project nil)
       (org-agenda-redo)
       (beginning-of-buffer)
@@ -1252,44 +1252,44 @@ so change the default 'F' binding in the agenda to allow both"
 Late deadlines first, then scheduled, then non-late deadlines"
   (let (result num-a num-b)
     (cond
-     ; time specific items are already sorted first by org-agenda-sorting-strategy
+                                        ; time specific items are already sorted first by org-agenda-sorting-strategy
 
-     ; non-deadline and non-scheduled items next
+                                        ; non-deadline and non-scheduled items next
      ((bh/agenda-sort-test 'bh/is-not-scheduled-or-deadline a b))
 
-     ; deadlines for today next
+                                        ; deadlines for today next
      ((bh/agenda-sort-test 'bh/is-due-deadline a b))
 
-     ; late deadlines next
+                                        ; late deadlines next
      ((bh/agenda-sort-test-num 'bh/is-late-deadline '> a b))
 
-     ; scheduled items for today next
+                                        ; scheduled items for today next
      ((bh/agenda-sort-test 'bh/is-scheduled-today a b))
 
-     ; late scheduled items next
+                                        ; late scheduled items next
      ((bh/agenda-sort-test-num 'bh/is-scheduled-late '> a b))
 
-     ; pending deadlines last
+                                        ; pending deadlines last
      ((bh/agenda-sort-test-num 'bh/is-pending-deadline '< a b))
 
-     ; finally default to unsorted
+                                        ; finally default to unsorted
      (t (setq result nil)))
     result))
 
 (defmacro bh/agenda-sort-test (fn a b)
   "Test for agenda sort"
   `(cond
-    ; if both match leave them unsorted
+                                        ; if both match leave them unsorted
     ((and (apply ,fn (list ,a))
           (apply ,fn (list ,b)))
      (setq result nil))
-    ; if a matches put a first
+                                        ; if a matches put a first
     ((apply ,fn (list ,a))
      (setq result -1))
-    ; otherwise if b matches put b first
+                                        ; otherwise if b matches put b first
     ((apply ,fn (list ,b))
      (setq result 1))
-    ; if none match leave them unsorted
+                                        ; if none match leave them unsorted
     (t nil)))
 
 (defmacro bh/agenda-sort-test-num (fn compfn a b)
@@ -1378,14 +1378,14 @@ Late deadlines first, then scheduled, then non-late deadlines"
                                    (gnus . org-gnus-no-new-news)
                                    (file . find-file))))
 
-; Use the current window for C-c ' source editing
+                                        ; Use the current window for C-c ' source editing
 (setq org-src-window-setup 'current-window)
 
 (setq org-log-done (quote time))
 (setq org-log-into-drawer t)
 (setq org-log-state-notes-insert-after-drawers nil)
 
-; position the habit graph on the agenda to the right of the default
+                                        ; position the habit graph on the agenda to the right of the default
 (setq org-habit-graph-column 50)
 
 (run-at-time "06:00" 86400 '(lambda () (setq org-habit-show-habits t)))
@@ -1480,10 +1480,10 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (setq org-return-follows-link t)
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button)))) t))
 
 (defun bh/prepare-meeting-notes ()
@@ -1550,7 +1550,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
                             ("\\.x?html?\\'" . system)
                             ("\\.pdf\\'" . system))))
 
-; Overwrite the current window with the agenda
+                                        ; Overwrite the current window with the agenda
 (setq org-agenda-window-setup 'current-window)
 
 (setq org-clone-delete-id t)
@@ -1561,18 +1561,18 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 (setq org-structure-template-alist
       (quote (("s" "#+begin_src ?\n\n#+end_src" "<src lang=\"?\">\n\n</src>")
-      ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
-      ("q" "#+begin_quote\n?\n#+end_quote" "<quote>\n?\n</quote>")
-      ("v" "#+begin_verse\n?\n#+end_verse" "<verse>\n?\n</verse>")
-      ("c" "#+begin_center\n?\n#+end_center" "<center>\n?\n</center>")
-      ("l" "#+begin_latex\n?\n#+end_latex" "<literal style=\"latex\">\n?\n</literal>")
-      ("L" "#+latex: " "<literal style=\"latex\">?</literal>")
-      ("h" "#+begin_html\n?\n#+end_html" "<literal style=\"html\">\n?\n</literal>")
-      ("H" "#+html: " "<literal style=\"html\">?</literal>")
-      ("a" "#+begin_ascii\n?\n#+end_ascii")
-      ("A" "#+ascii: ")
-      ("i" "#+index: ?" "#+index: ?")
-      ("I" "#+include %file ?" "<include file=%file markup=\"?\">"))))
+              ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
+              ("q" "#+begin_quote\n?\n#+end_quote" "<quote>\n?\n</quote>")
+              ("v" "#+begin_verse\n?\n#+end_verse" "<verse>\n?\n</verse>")
+              ("c" "#+begin_center\n?\n#+end_center" "<center>\n?\n</center>")
+              ("l" "#+begin_latex\n?\n#+end_latex" "<literal style=\"latex\">\n?\n</literal>")
+              ("L" "#+latex: " "<literal style=\"latex\">?</literal>")
+              ("h" "#+begin_html\n?\n#+end_html" "<literal style=\"html\">\n?\n</literal>")
+              ("H" "#+html: " "<literal style=\"html\">?</literal>")
+              ("a" "#+begin_ascii\n?\n#+end_ascii")
+              ("A" "#+ascii: ")
+              ("i" "#+index: ?" "#+index: ?")
+              ("I" "#+include %file ?" "<include file=%file markup=\"?\">"))))
 
 (defun bh/mark-next-parent-tasks-todo ()
   "Visit each parent task and change NEXT states to TODO"

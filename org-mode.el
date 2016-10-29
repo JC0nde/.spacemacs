@@ -182,32 +182,33 @@
 
 (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
 
-                                        ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
 
-                                        ; Use full outline paths for refile targets - we file directly with IDO
+;; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
 
-                                        ; Targets complete directly with IDO
+;; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
 
-                                        ; Allow refile to create parent tasks with confirmation
+;; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-                                        ; Use IDO for both buffer and file completion and ido-everywhere to t
+;; Use IDO for both buffer and file completion and ido-everywhere to t
 (setq org-completion-use-ido t)
 (setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
 (ido-mode (quote both))
-                                        ; Use the current window when visiting files and buffers with ido
+;; Use the current window when visiting files and buffers with ido
 (setq ido-default-file-method 'selected-window)
 (setq ido-default-buffer-method 'selected-window)
-                                        ; Use the current window for indirect buffer display
+;; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
-;;;; Refile settings
-                                        ; Exclude DONE state tasks from refile targets
+;; Refile settings
+;;
+;; Exclude DONE state tasks from refile targets
 (defun bh/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -378,7 +379,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-                                        ; Find the tags on the current task
+      ;; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -465,18 +466,18 @@ A prefix arg forces clock in of the default task."
 (setq org-agenda-clockreport-parameter-plist
       (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80)))
 
-                                        ; Set default column view headings: Task Effort Clock_Summary
+;; Set default column view headings: Task Effort Clock_Summary
 (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
 
-                                        ; global Effort estimate values
-                                        ; global STYLE property values for completion
+;; global Effort estimate values
+;; global STYLE property values for completion
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 
 ;; Agenda log mode items to display (closed and state changes by default)
 (setq org-agenda-log-mode-items (quote (closed state)))
 
-                                        ; Tags with fast selection keys
+;; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
                             ("@office" . ?o)
@@ -495,10 +496,10 @@ A prefix arg forces clock in of the default task."
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
-                                        ; Allow setting single tags without the menu
+;; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
-                                        ; For tag searches ignore tasks with scheduled and deadline dates
+;; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
 
 ;;(require 'bbdb)
@@ -654,7 +655,7 @@ Callers of this function already widen the buffer view."
                   (setq has-next t))))
             (if has-next
                 next-headline
-              nil)) ; a stuck project, has subtasks but no next task
+              nil)) ;; a stuck project, has subtasks but no next task
         next-headline))))
 
 (defun bh/skip-non-projects ()
@@ -1117,13 +1118,13 @@ so change the default 'F' binding in the agenda to allow both"
   (let (num-project-left current-project)
     (unless (marker-position org-agenda-restrict-begin)
       (goto-char (point-min))
-                                        ; Clear all of the existing markers on the list
+      ;; Clear all of the existing markers on the list
       (while bh/project-list
         (set-marker (pop bh/project-list) nil))
       (re-search-forward "Tasks to Refile")
       (forward-visible-line 1))
 
-                                        ; Build a new project marker list
+    ;; Build a new project marker list
     (unless bh/project-list
       (while (< (point) (point-max))
         (while (and (< (point) (point-max))
@@ -1252,44 +1253,44 @@ so change the default 'F' binding in the agenda to allow both"
 Late deadlines first, then scheduled, then non-late deadlines"
   (let (result num-a num-b)
     (cond
-                                        ; time specific items are already sorted first by org-agenda-sorting-strategy
+     ;; time specific items are already sorted first by org-agenda-sorting-strategy
 
-                                        ; non-deadline and non-scheduled items next
+     ;; non-deadline and non-scheduled items next
      ((bh/agenda-sort-test 'bh/is-not-scheduled-or-deadline a b))
 
-                                        ; deadlines for today next
+     ;; deadlines for today next
      ((bh/agenda-sort-test 'bh/is-due-deadline a b))
 
-                                        ; late deadlines next
+     ;; late deadlines next
      ((bh/agenda-sort-test-num 'bh/is-late-deadline '> a b))
 
-                                        ; scheduled items for today next
+     ;; scheduled items for today next
      ((bh/agenda-sort-test 'bh/is-scheduled-today a b))
 
-                                        ; late scheduled items next
+     ;; late scheduled items next
      ((bh/agenda-sort-test-num 'bh/is-scheduled-late '> a b))
 
-                                        ; pending deadlines last
+     ;; pending deadlines last
      ((bh/agenda-sort-test-num 'bh/is-pending-deadline '< a b))
 
-                                        ; finally default to unsorted
+     ;; finally default to unsorted
      (t (setq result nil)))
     result))
 
 (defmacro bh/agenda-sort-test (fn a b)
   "Test for agenda sort"
   `(cond
-                                        ; if both match leave them unsorted
+    ;; if both match leave them unsorted
     ((and (apply ,fn (list ,a))
           (apply ,fn (list ,b)))
      (setq result nil))
-                                        ; if a matches put a first
+    ;; if a matches put a first
     ((apply ,fn (list ,a))
      (setq result -1))
-                                        ; otherwise if b matches put b first
+    ;; otherwise if b matches put b first
     ((apply ,fn (list ,b))
      (setq result 1))
-                                        ; if none match leave them unsorted
+    ;; if none match leave them unsorted
     (t nil)))
 
 (defmacro bh/agenda-sort-test-num (fn compfn a b)
@@ -1378,14 +1379,14 @@ Late deadlines first, then scheduled, then non-late deadlines"
                                    (gnus . org-gnus-no-new-news)
                                    (file . find-file))))
 
-                                        ; Use the current window for C-c ' source editing
+;; Use the current window for C-c ' source editing
 (setq org-src-window-setup 'current-window)
 
 (setq org-log-done (quote time))
 (setq org-log-into-drawer t)
 (setq org-log-state-notes-insert-after-drawers nil)
 
-                                        ; position the habit graph on the agenda to the right of the default
+;; position the habit graph on the agenda to the right of the default
 (setq org-habit-graph-column 50)
 
 (run-at-time "06:00" 86400 '(lambda () (setq org-habit-show-habits t)))
@@ -1550,7 +1551,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
                             ("\\.x?html?\\'" . system)
                             ("\\.pdf\\'" . system))))
 
-                                        ; Overwrite the current window with the agenda
+;; Overwrite the current window with the agenda
 (setq org-agenda-window-setup 'current-window)
 
 (setq org-clone-delete-id t)

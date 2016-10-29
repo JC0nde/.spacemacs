@@ -42,7 +42,10 @@
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 (require 'org)
 
-;;Agenda setup
+;; The following setting is different from the document so that you
+;; can override the document org-agenda-files by setting your
+;; org-agenda-files in the variable org-user-agenda-files
+;;
 (if (boundp 'org-user-agenda-files)
     (setq org-agenda-files org-user-agenda-files)
   (setq org-agenda-files (quote ("~/jonathan/org"
@@ -54,47 +57,69 @@
                                  "~/jonathan/org/clients"
                                  "~/jonathan/org/clients/mali.org"))))
 
-;; Todo keywords
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+;; Custom Key Bindings
+;; (global-set-key (kbd "<f12>") 'org-agenda)
+;; (global-set-key (kbd "<f5>") 'bh/org-todo)
+;; (global-set-key (kbd "<S-f5>") 'bh/widen)
+;; (global-set-key (kbd "<f7>") 'bh/set-truncate-lines)
+;; (global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
+;; (global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
+;; (global-set-key (kbd "<f9> b") 'bbdb)
+;; (global-set-key (kbd "<f9> c") 'calendar)
+;; (global-set-key (kbd "<f9> f") 'boxquote-insert-file)
+;; (global-set-key (kbd "<f9> g") 'gnus)
+;; (global-set-key (kbd "<f9> h") 'bh/hide-other)
+;; (global-set-key (kbd "<f9> n") 'bh/toggle-next-task-display)
 
-(setq org-use-fast-todo-selection t)
+;; (global-set-key (kbd "<f9> I") 'bh/punch-in)
+;; (global-set-key (kbd "<f9> O") 'bh/punch-out)
 
-(setq org-todo-state-tags-triggers
-      (quote (("CANCELLED" ("CANCELLED" . t))
-              ("WAITING" ("WAITING" . t))
-              ("HOLD" ("WAITING") ("HOLD" . t))
-              (done ("WAITING") ("HOLD"))
-              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+;; (global-set-key (kbd "<f9> o") 'bh/make-org-scratch)
 
-(setq org-directory "~/jonathan/git/org")
-(setq org-default-notes-file "~/jonathan/git/org/refile.org")
+;; (global-set-key (kbd "<f9> r") 'boxquote-region)
+;; (global-set-key (kbd "<f9> s") 'bh/switch-to-scratch)
 
-;; I use C-c c to start capture mode
+;; (global-set-key (kbd "<f9> t") 'bh/insert-inactive-timestamp)
+;; (global-set-key (kbd "<f9> T") 'bh/toggle-insert-inactive-timestamp)
+
+;; (global-set-key (kbd "<f9> v") 'visible-mode)
+;; (global-set-key (kbd "<f9> l") 'org-toggle-link-display)
+;; (global-set-key (kbd "<f9> SPC") 'bh/clock-in-last-task)
+;; (global-set-key (kbd "C-<f9>") 'previous-buffer)
+;; (global-set-key (kbd "M-<f9>") 'org-toggle-inline-images)
+;; (global-set-key (kbd "C-x n r") 'narrow-to-region)
+;; (global-set-key (kbd "C-<f10>") 'next-buffer)
+;; (global-set-key (kbd "<f11>") 'org-clock-goto)
+;; (global-set-key (kbd "C-<f11>") 'org-clock-in)
+;; (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
 
-;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
-;; (defvar org-capture-templates)
-(setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/jonathan/org/refile.org")
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("r" "respond" entry (file "~/jonathan/org/refile.org")
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file "~/jonathan/org/refile.org")
-               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/jonathan/git/org/diary.org")
-               "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "~/jonathan/org/refile.org")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file "~/jonathan/org/refile.org")
-               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file "~/jonathan/org/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file "~/jonathan/org/refile.org")
-               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+(defun bh/hide-other ()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading 'invisible-ok)
+    (hide-other)
+    (org-cycle)
+    (org-cycle)
+    (org-cycle)))
+
+(defun bh/set-truncate-lines ()
+  "Toggle value of truncate-lines and refresh window display."
+  (interactive)
+  (setq truncate-lines (not truncate-lines))
+  ;; now refresh window display (an idiom from simple.el):
+  (save-excursion
+    (set-window-start (selected-window)
+                      (window-start (selected-window)))))
+
+(defun bh/make-org-scratch ()
+  (interactive)
+  (find-file "/tmp/publish/scratch.org")
+  (gnus-make-directory "/tmp/publish"))
+
+(defun bh/switch-to-scratch ()
+  (interactive)
+  (switch-to-buffer "*scratch*"))
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -111,6 +136,7 @@
               ("PHONE" :foreground "forest green" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
+
 (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
 (setq org-todo-state-tags-triggers
@@ -122,29 +148,29 @@
               ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
               ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
-(setq org-directory "~/git/org")
-(setq org-default-notes-file "~/git/org/refile.org")
+(setq org-directory "~/jonathan/org")
+(setq org-default-notes-file "~/jonathan/org/refile.org")
 
 ;; I use C-c c to start capture mode
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/org/refile.org")
+      (quote (("t" "todo" entry (file "~/jonathan/org/refile.org")
                "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("r" "respond" entry (file "~/org/refile.org")
+              ("r" "respond" entry (file "~/jonathan/org/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file "~/org/refile.org")
+              ("n" "note" entry (file "~/jonathan/org/refile.org")
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/org/journal.org")
+              ("j" "Journal" entry (file+datetree "~/jonathan/org/journal.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "~/org/refile.org")
+              ("w" "org-protocol" entry (file "~/jonathan/org/refile.org")
                "* TODO Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file "~/org/refile.org")
+              ("m" "Meeting" entry (file "~/jonathan/org/refile.org")
                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file "~/org/refile.org")
+              ("p" "Phone call" entry (file "~/jonathan/org/refile.org")
                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file "~/org/refile.org")
+              ("h" "Habit" entry (file "~/jonathan/org/refile.org")
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
 ;; Remove empty LOGBOOK drawers on clock out
@@ -156,32 +182,32 @@
 
 (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
 
-                                        ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
 
-                                        ; Use full outline paths for refile targets - we file directly with IDO
+; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
 
-                                        ; Targets complete directly with IDO
+; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
 
-                                        ; Allow refile to create parent tasks with confirmation
+; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-                                        ; Use IDO for both buffer and file completion and ido-everywhere to t
+; Use IDO for both buffer and file completion and ido-everywhere to t
 (setq org-completion-use-ido t)
 (setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
 (ido-mode (quote both))
-                                        ; Use the current window when visiting files and buffers with ido
+; Use the current window when visiting files and buffers with ido
 (setq ido-default-file-method 'selected-window)
 (setq ido-default-buffer-method 'selected-window)
-                                        ; Use the current window for indirect buffer display
+; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
 ;;;; Refile settings
-                                        ; Exclude DONE state tasks from refile targets
+; Exclude DONE state tasks from refile targets
 (defun bh/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -268,22 +294,17 @@
                        (org-tags-match-list-sublevels nil))))
                nil))))
 
-
-
-;;Automatically removing context based tasks with / RET
 (defun bh/org-auto-exclude-function (tag)
   "Automatic task exclusion in the agenda with / RET"
   (and (cond
         ((string= tag "hold")
          t)
-        ((string= tag "bureau")
+        ((string= tag "farm")
          t))
        (concat "-" tag)))
 
 (setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
 
-
-;;Clock Setup
 ;;
 ;; Resume clocking task when emacs is restarted
 (org-clock-persistence-insinuate)
@@ -357,7 +378,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-                                        ; Find the tags on the current task
+      ; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -405,13 +426,11 @@ as the default task."
 
 (add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
 
-
-
-(require 'org-id)
-(defun bh/clock-in-task-by-id (id)
-  "Clock in a task by id"
-  (org-with-point-at (org-id-find id 'marker)
-    (org-clock-in nil)))
+;; (require 'org-id)
+;; (defun bh/clock-in-task-by-id (id)
+;;   "Clock in a task by id"
+;;   (org-with-point-at (org-id-find id 'marker)
+;;     (org-clock-in nil)))
 
 (defun bh/clock-in-last-task (arg)
   "Clock in the interrupted task if there is one
@@ -431,51 +450,33 @@ A prefix arg forces clock in of the default task."
     (org-with-point-at clock-in-to-task
       (org-clock-in nil))))
 
-
-
-;;makes time editing use discrete minute intervals (no rounding) increments
 (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
-
-
-;;1 minute clocking gaps
 (setq org-agenda-clock-consistency-checks
       (quote (:max-duration "4:00"
-                            :min-duration 0
-                            :max-gap 0
-                            :gap-ok-around ("4:00"))))
+              :min-duration 0
+              :max-gap 0
+              :gap-ok-around ("4:00"))))
 
-
-
-;; Removes clocked tasks with 0:00 duration
+;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
 (setq org-clock-out-remove-zero-time-clocks t)
-
-
 
 ;; Agenda clock report parameters
 (setq org-agenda-clockreport-parameter-plist
       (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80)))
 
-
-
-;; Set default column view headings: Task Effort Clock_Summary
+; Set default column view headings: Task Effort Clock_Summary
 (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
 
-
-
-;; global Effort estimate values
-;; global STYLE property values for completion
+; global Effort estimate values
+; global STYLE property values for completion
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
-
-
 
 ;; Agenda log mode items to display (closed and state changes by default)
 (setq org-agenda-log-mode-items (quote (closed state)))
 
-;; TAGS
-;;
-;; Tags with fast selection keys
+; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
                             ("@office" . ?o)
@@ -494,25 +495,14 @@ A prefix arg forces clock in of the default task."
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
-;; Allow setting single tags without the menu
+; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
-;; For tag searches ignore tasks with scheduled and deadline dates
+; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
 
-
-
-;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
-(setq org-capture-templates
-      (quote (...
-              ("p" "Phone call" entry (file "~/git/org/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ...)))
-
-
-
-;; (require 'bbdb)
-;; (require 'bbdb-com)
+;;(require 'bbdb)
+;;(require 'bbdb-com)
 
 ;; (global-set-key (kbd "<f9> p") 'bh/phone-call)
 
@@ -548,16 +538,9 @@ A prefix arg forces clock in of the default task."
 ;;                        (t "NameOfCaller")))
 ;;     (insert caller)))
 
-
-
-;; Weekly Review Process
-;;
 (setq org-agenda-span 'day)
 
-;;disable org-mode stuck projects agenda view
 (setq org-stuck-projects (quote ("" nil nil "")))
-
-
 
 (defun bh/is-project-p ()
   "Any task with a todo keyword subtask"
@@ -813,9 +796,6 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
         nil
       next-headline)))
 
-
-;;Archive Setup
-;;
 (setq org-archive-mark-done nil)
 (setq org-archive-location "%s_archive::* Archived Tasks")
 
@@ -837,11 +817,35 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
                                            (and (< (point) subtree-end)
                                                 (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
                 (if subtree-is-current
-                    subtree-end ;; Has a date in this month or last month, skip it
-                  nil))  ;; available to archive
+                    subtree-end ; Has a date in this month or last month, skip it
+                  nil))  ; available to archive
             (or subtree-end (point-max)))
         next-headline))))
 
+(setq org-alphabetical-lists t)
+
+; I'm lazy and don't want to remember the name of the project to publish when I modify
+; a file that is part of a project.  So this function saves the file, and publishes
+; the project that includes this file
+;
+; It's bound to C-S-F12 so I just edit and hit C-S-F12 when I'm done and move on to the next thing
+(defun bh/save-then-publish (&optional force)
+  (interactive "P")
+  (save-buffer)
+  (org-save-all-org-buffers)
+  (let ((org-html-head-extra)
+        (org-html-validation-link "<a href=\"http://validator.w3.org/check?uri=referer\">Validate XHTML 1.0</a>"))
+    (org-publish-current-project force)))
+
+(global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
+
+(setq org-latex-listings t)
+
+(setq org-html-xml-declaration (quote (("html" . "")
+                                       ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
+                                       ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+
+(setq org-export-allow-BIND t)
 
 ;; Erase all reminders and rebuilt reminders for today from the agenda
 (defun bh/org-agenda-to-appt ()
@@ -861,7 +865,138 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 ;; If we leave Emacs running overnight - reset the appointments one minute after midnight
 (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
 
+;; Enable abbrev-mode
+(add-hook 'org-mode-hook (lambda () (abbrev-mode 1)))
 
+;; Skeletons
+;;
+;; sblk - Generic block #+begin_FOO .. #+end_FOO
+(define-skeleton skel-org-block
+"Insert an org block, querying for type."
+"Type: "
+"#+begin_" str "\n"
+_ - \n
+"#+end_" str "\n")
+
+(define-abbrev org-mode-abbrev-table "sblk" "" 'skel-org-block)
+
+;; splantuml - PlantUML Source block
+(define-skeleton skel-org-block-plantuml
+"Insert a org plantuml block, querying for filename."
+"File (no extension): "
+"#+begin_src plantuml :file " str ".png :cache yes\n"
+_ - \n
+"#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "splantuml" "" 'skel-org-block-plantuml)
+
+(define-skeleton skel-org-block-plantuml-activity
+"Insert a org plantuml block, querying for filename."
+"File (no extension): "
+"#+begin_src plantuml :file " str "-act.png :cache yes :tangle " str "-act.txt\n"
+(bh/plantuml-reset-counters)
+"@startuml\n"
+"skinparam activity {\n"
+"BackgroundColor<<New>> Cyan\n"
+"}\n\n"
+"title " str " - \n"
+"note left: " str "\n"
+"(*) --> \"" str "\"\n"
+"--> (*)\n"
+_ - \n
+"@enduml\n"
+"#+end_src\n")
+
+(defvar bh/plantuml-if-count 0)
+
+(defun bh/plantuml-if ()
+(incf bh/plantuml-if-count)
+(number-to-string bh/plantuml-if-count))
+
+(defvar bh/plantuml-loop-count 0)
+
+(defun bh/plantuml-loop ()
+(incf bh/plantuml-loop-count)
+(number-to-string bh/plantuml-loop-count))
+
+(defun bh/plantuml-reset-counters ()
+(setq bh/plantuml-if-count 0
+bh/plantuml-loop-count 0)
+"")
+
+(define-abbrev org-mode-abbrev-table "sact" "" 'skel-org-block-plantuml-activity)
+
+(define-skeleton skel-org-block-plantuml-activity-if
+"Insert a org plantuml block activity if statement"
+""
+"if \"\" then\n"
+"  -> [condition] ==IF" (setq ifn (bh/plantuml-if)) "==\n"
+"  --> ==IF" ifn "M1==\n"
+"  -left-> ==IF" ifn "M2==\n"
+"else\n"
+"end if\n"
+"--> ==IF" ifn "M2==")
+
+(define-abbrev org-mode-abbrev-table "sif" "" 'skel-org-block-plantuml-activity-if)
+
+(define-skeleton skel-org-block-plantuml-activity-for
+"Insert a org plantuml block activity for statement"
+"Loop for each: "
+"--> ==LOOP" (setq loopn (bh/plantuml-loop)) "==\n"
+"note left: Loop" loopn ": For each " str "\n"
+"--> ==ENDLOOP" loopn "==\n"
+"note left: Loop" loopn ": End for each " str "\n" )
+
+(define-abbrev org-mode-abbrev-table "sfor" "" 'skel-org-block-plantuml-activity-for)
+
+(define-skeleton skel-org-block-plantuml-sequence
+"Insert a org plantuml activity diagram block, querying for filename."
+"File appends (no extension): "
+"#+begin_src plantuml :file " str "-seq.png :cache yes :tangle " str "-seq.txt\n"
+"@startuml\n"
+"title " str " - \n"
+"actor CSR as \"Customer Service Representative\"\n"
+"participant CSMO as \"CSM Online\"\n"
+"participant CSMU as \"CSM Unix\"\n"
+"participant NRIS\n"
+"actor Customer"
+_ - \n
+"@enduml\n"
+"#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sseq" "" 'skel-org-block-plantuml-sequence)
+
+;; sdot - Graphviz DOT block
+(define-skeleton skel-org-block-dot
+"Insert a org graphviz dot block, querying for filename."
+"File (no extension): "
+"#+begin_src dot :file " str ".png :cache yes :cmdline -Kdot -Tpng\n"
+"graph G {\n"
+_ - \n
+"}\n"
+"#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sdot" "" 'skel-org-block-dot)
+
+;; sditaa - Ditaa source block
+(define-skeleton skel-org-block-ditaa
+"Insert a org ditaa block, querying for filename."
+"File (no extension): "
+"#+begin_src ditaa :file " str ".png :cache yes\n"
+_ - \n
+"#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sditaa" "" 'skel-org-block-ditaa)
+
+;; selisp - Emacs Lisp source block
+(define-skeleton skel-org-block-elisp
+"Insert a org emacs-lisp block"
+""
+"#+begin_src emacs-lisp\n"
+_ - \n
+"#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "selisp" "" 'skel-org-block-elisp)
 
 (global-set-key (kbd "<f5>") 'bh/org-todo)
 
@@ -1022,13 +1157,8 @@ so change the default 'F' binding in the agenda to allow both"
           '(lambda () (org-defkey org-agenda-mode-map "V" 'bh/view-next-project))
           'append)
 
-
-;; Show next headline
 (setq org-show-entry-below (quote ((default))))
 
-
-
-;; Limiting the agenda to a subtree
 (add-hook 'org-agenda-mode-hook
           '(lambda () (org-defkey org-agenda-mode-map "\C-c\C-x<" 'bh/set-agenda-restriction-lock))
           'append)
@@ -1051,28 +1181,13 @@ so change the default 'F' binding in the agenda to allow both"
           (org-with-point-at pom
             (org-agenda-set-restriction-lock restriction-type))))))))
 
-
-
 ;; Limit restriction lock highlighting to the headline only
 (setq org-agenda-restriction-lock-highlight-subtree nil)
 
-
-
-;;Tuning the Agenda Views
-;;
 ;; Always hilight the current agenda line
 (add-hook 'org-agenda-mode-hook
           '(lambda () (hl-line-mode 1))
           'append)
-;; The following custom-set-faces create the highlights
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-mode-line-clock ((t (:background "grey75" :foreground "red" :box (:line-width -1 :style released-button)))) t))
-
-
 
 ;; Keep tasks with dates on the global todo lists
 (setq org-agenda-todo-ignore-with-date nil)
@@ -1095,20 +1210,13 @@ so change the default 'F' binding in the agenda to allow both"
 ;; Remove completed items from search results
 (setq org-agenda-skip-timestamp-if-done t)
 
-
-
-;; Use the Diary for Holidays and Appointments
 (setq org-agenda-include-diary nil)
-(setq org-agenda-diary-file "~/org/journal.org")
+(setq org-agenda-diary-file "~/jonathan/org/journal.org")
 
 (setq org-agenda-insert-diary-extract-time t)
 
-
-
 ;; Include agenda archive files when searching for things
 (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
-
-
 
 ;; Show all future entries for repeating tasks
 (setq org-agenda-repeating-timestamp-show-all t)
@@ -1227,102 +1335,245 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (defun bh/is-scheduled-late (date-str)
   (string-match "Sched\.\\(.*\\)x:" date-str))
 
-
-
 ;; Use sticky agenda's so they persist
 (setq org-agenda-sticky t)
 
+;; The following setting is different from the document so that you
+;; can override the document path by setting your path in the variable
+;; org-mode-user-contrib-lisp-path
+
+
+;; (require 'org-checklist)
+
 (setq org-enforce-todo-dependencies t)
 
-
-
-;; Org Task structure and presentation
-;;
-;; Show leading stars use
 (setq org-hide-leading-stars nil)
 
-;; hide blank lines
+(setq org-startup-indented t)
+
 (setq org-cycle-separator-lines 0)
 
-;; Prevents creating blank lines before headings but allows list items to adapt to existing blank lines around the items
 (setq org-blank-before-new-entry (quote ((heading)
                                          (plain-list-item . auto))))
 
-;; Adding new tasks quickly without disturbing the current task content
 (setq org-insert-heading-respect-content nil)
 
-;; Notes at the top
 (setq org-reverse-note-order nil)
 
-;; Searching and showing results
 (setq org-show-following-heading t)
 (setq org-show-hierarchy-above t)
 (setq org-show-siblings (quote ((default))))
 
+(setq org-special-ctrl-a/e t)
 (setq org-special-ctrl-k t)
 (setq org-yank-adjusted-subtrees t)
 
-;; Attachments
 (setq org-id-method (quote uuidgen))
 
-
-
-;; Deadlines and agenda visibility
-;;
-;; 30 days before the due date
 (setq org-deadline-warning-days 30)
 
-;; Exporting tables to CSV
 (setq org-table-export-default-format "orgtbl-to-csv")
 
-;;Minimize Emacs Frames
 (setq org-link-frame-setup (quote ((vm . vm-visit-folder)
                                    (gnus . org-gnus-no-new-news)
                                    (file . find-file))))
 
-;; Use the current window for C-c ' source editing
+; Use the current window for C-c ' source editing
 (setq org-src-window-setup 'current-window)
 
-
-;; Logging stuff
-;;
-;; settings
 (setq org-log-done (quote time))
 (setq org-log-into-drawer t)
 (setq org-log-state-notes-insert-after-drawers nil)
 
-;; Auto-revert mode
+; position the habit graph on the agenda to the right of the default
+(setq org-habit-graph-column 50)
+
+(run-at-time "06:00" 86400 '(lambda () (setq org-habit-show-habits t)))
+
 (global-auto-revert-mode t)
+
+(setq org-use-speed-commands t)
+(setq org-speed-commands-user (quote (("0" . ignore)
+                                      ("1" . ignore)
+                                      ("2" . ignore)
+                                      ("3" . ignore)
+                                      ("4" . ignore)
+                                      ("5" . ignore)
+                                      ("6" . ignore)
+                                      ("7" . ignore)
+                                      ("8" . ignore)
+                                      ("9" . ignore)
+
+                                      ("a" . ignore)
+                                      ("d" . ignore)
+                                      ("h" . bh/hide-other)
+                                      ("i" progn
+                                       (forward-char 1)
+                                       (call-interactively 'org-insert-heading-respect-content))
+                                      ("k" . org-kill-note-or-show-branches)
+                                      ("l" . ignore)
+                                      ("m" . ignore)
+                                      ("q" . bh/show-org-agenda)
+                                      ("r" . ignore)
+                                      ("s" . org-save-all-org-buffers)
+                                      ("w" . org-refile)
+                                      ("x" . ignore)
+                                      ("y" . ignore)
+                                      ("z" . org-add-note)
+
+                                      ("A" . ignore)
+                                      ("B" . ignore)
+                                      ("E" . ignore)
+                                      ("F" . bh/restrict-to-file-or-follow)
+                                      ("G" . ignore)
+                                      ("H" . ignore)
+                                      ("J" . org-clock-goto)
+                                      ("K" . ignore)
+                                      ("L" . ignore)
+                                      ("M" . ignore)
+                                      ("N" . bh/narrow-to-org-subtree)
+                                      ("P" . bh/narrow-to-org-project)
+                                      ("Q" . ignore)
+                                      ("R" . ignore)
+                                      ("S" . ignore)
+                                      ("T" . bh/org-todo)
+                                      ("U" . bh/narrow-up-one-org-level)
+                                      ("V" . ignore)
+                                      ("W" . bh/widen)
+                                      ("X" . ignore)
+                                      ("Y" . ignore)
+                                      ("Z" . ignore))))
+
+(defun bh/show-org-agenda ()
+  (interactive)
+  (if org-agenda-sticky
+      (switch-to-buffer "*Org Agenda( )*")
+    (switch-to-buffer "*Org Agenda*"))
+  (delete-other-windows))
+
+;; (require 'org-protocol)
 
 (setq require-final-newline t)
 
-;; Return follow links
+(defvar bh/insert-inactive-timestamp t)
+
+(defun bh/toggle-insert-inactive-timestamp ()
+  (interactive)
+  (setq bh/insert-inactive-timestamp (not bh/insert-inactive-timestamp))
+  (message "Heading timestamps are %s" (if bh/insert-inactive-timestamp "ON" "OFF")))
+
+(defun bh/insert-inactive-timestamp ()
+  (interactive)
+  (org-insert-time-stamp nil t t nil nil nil))
+
+(defun bh/insert-heading-inactive-timestamp ()
+  (save-excursion
+    (when bh/insert-inactive-timestamp
+      (org-return)
+      (org-cycle)
+      (bh/insert-inactive-timestamp))))
+
+(add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
+
+(setq org-export-with-timestamps nil)
+
 (setq org-return-follows-link t)
 
-;; Remove indentation on tags view
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button)))) t))
+
+(defun bh/prepare-meeting-notes ()
+  "Prepare meeting notes for email
+   Take selected region and convert tabs to spaces, mark TODOs with leading >>>, and copy to kill ring for pasting"
+  (interactive)
+  (let (prefix)
+    (save-excursion
+      (save-restriction
+        (narrow-to-region (region-beginning) (region-end))
+        (untabify (point-min) (point-max))
+        (goto-char (point-min))
+        (while (re-search-forward "^\\( *-\\\) \\(TODO\\|DONE\\): " (point-max) t)
+          (replace-match (concat (make-string (length (match-string 1)) ?>) " " (match-string 2) ": ")))
+        (goto-char (point-min))
+        (kill-ring-save (point-min) (point-max))))))
+
+(setq org-remove-highlights-with-change t)
+
+(add-to-list 'Info-default-directory-list "~/git/org-mode/doc")
+
+(setq org-read-date-prefer-future 'time)
+
+(setq org-list-demote-modify-bullet (quote (("+" . "-")
+                                            ("*" . "-")
+                                            ("1." . "-")
+                                            ("1)" . "-")
+                                            ("A)" . "-")
+                                            ("B)" . "-")
+                                            ("a)" . "-")
+                                            ("b)" . "-")
+                                            ("A." . "-")
+                                            ("B." . "-")
+                                            ("a." . "-")
+                                            ("b." . "-"))))
+
 (setq org-tags-match-list-sublevels t)
 
-;; Agenda persistent filters
 (setq org-agenda-persistent-filter t)
 
-;; Remove multiple state change log from agenda
+(setq org-link-mailto-program (quote (compose-mail "%a" "%s")))
+
+;; (add-to-list 'load-path (expand-file-name "~/.emacs.d"))
+;; ;;(require 'smex)
+;; (smex-initialize)
+
+;; (global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "C-x x") 'smex)
+;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+;; Bookmark handling
+;;
+(global-set-key (kbd "<C-f6>") '(lambda () (interactive) (bookmark-set "SAVED")))
+(global-set-key (kbd "<f6>") '(lambda () (interactive) (bookmark-jump "SAVED")))
+
+;; (require 'org-mime)
+
 (setq org-agenda-skip-additional-timestamps-same-entry t)
 
-;; system settings for file-application selection
+(setq org-table-use-standard-references (quote from))
+
 (setq org-file-apps (quote ((auto-mode . emacs)
                             ("\\.mm\\'" . system)
                             ("\\.x?html?\\'" . system)
                             ("\\.pdf\\'" . system))))
 
-;; Overwrite the current window with the agenda
+; Overwrite the current window with the agenda
 (setq org-agenda-window-setup 'current-window)
 
-;; Delete ids when cloning
 (setq org-clone-delete-id t)
 
 (setq org-cycle-include-plain-lists t)
 
-;; NEXT is for tasks
+(setq org-src-fontify-natively t)
+
+(setq org-structure-template-alist
+      (quote (("s" "#+begin_src ?\n\n#+end_src" "<src lang=\"?\">\n\n</src>")
+      ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
+      ("q" "#+begin_quote\n?\n#+end_quote" "<quote>\n?\n</quote>")
+      ("v" "#+begin_verse\n?\n#+end_verse" "<verse>\n?\n</verse>")
+      ("c" "#+begin_center\n?\n#+end_center" "<center>\n?\n</center>")
+      ("l" "#+begin_latex\n?\n#+end_latex" "<literal style=\"latex\">\n?\n</literal>")
+      ("L" "#+latex: " "<literal style=\"latex\">?</literal>")
+      ("h" "#+begin_html\n?\n#+end_html" "<literal style=\"html\">\n?\n</literal>")
+      ("H" "#+html: " "<literal style=\"html\">?</literal>")
+      ("a" "#+begin_ascii\n?\n#+end_ascii")
+      ("A" "#+ascii: ")
+      ("i" "#+index: ?" "#+index: ?")
+      ("I" "#+include %file ?" "<include file=%file markup=\"?\">"))))
+
 (defun bh/mark-next-parent-tasks-todo ()
   "Visit each parent task and change NEXT states to TODO"
   (let ((mystate (or (and (fboundp 'org-state)
@@ -1337,28 +1588,73 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (add-hook 'org-after-todo-state-change-hook 'bh/mark-next-parent-tasks-todo 'append)
 (add-hook 'org-clock-in-hook 'bh/mark-next-parent-tasks-todo 'append)
 
-;;Startup in folded view.
 (setq org-startup-folded t)
+
+(add-hook 'message-mode-hook 'orgstruct++-mode 'append)
+(add-hook 'message-mode-hook 'turn-on-auto-fill 'append)
+(add-hook 'message-mode-hook 'bbdb-define-all-aliases 'append)
+(add-hook 'message-mode-hook 'orgtbl-mode 'append)
+(add-hook 'message-mode-hook 'turn-on-flyspell 'append)
+(add-hook 'message-mode-hook
+          '(lambda () (setq fill-column 72))
+          'append)
+
+;; flyspell mode for spell checking everywhere
+(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+
+;; Disable keys in org-mode
+;;    C-c [
+;;    C-c ]
+;;    C-c ;
+;;    C-c C-x C-q  cancelling the clock (we never want this)
+(add-hook 'org-mode-hook
+          '(lambda ()
+             ;; Undefine C-c [ and C-c ] since this breaks my
+             ;; org-agenda files when directories are include It
+             ;; expands the files in the directories individually
+             (org-defkey org-mode-map "\C-c[" 'undefined)
+             (org-defkey org-mode-map "\C-c]" 'undefined)
+             (org-defkey org-mode-map "\C-c;" 'undefined)
+             (org-defkey org-mode-map "\C-c\C-x\C-q" 'undefined))
+          'append)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c M-o") 'bh/mail-subtree))
+          'append)
+
+(defun bh/mail-subtree ()
+  (interactive)
+  (org-mark-subtree)
+  (org-mime-subtree))
 
 (setq org-src-preserve-indentation nil)
 (setq org-edit-src-content-indentation 0)
 
 (setq org-catch-invisible-edits 'error)
 
-;; UTF8
 (setq org-export-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (set-charset-priority 'unicode)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 
-;; Clock duration to hours
 (setq org-time-clocksum-format
       '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
+(setq org-emphasis-alist (quote (("*" bold "<b>" "</b>")
+                                 ("/" italic "<i>" "</i>")
+                                 ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+                                 ("=" org-code "<code>" "</code>" verbatim)
+                                 ("~" org-verbatim "<code>" "</code>" verbatim))))
 
+(setq org-use-sub-superscripts nil)
 
-(provide 'org-custom.el)
+(setq org-odd-levels-only nil)
 
-;;; org-custom.el ends here
+(run-at-time "00:59" 3600 'org-save-all-org-buffers)
+
+(provide 'org-mode)
+
+;;; org-mode.el ends here

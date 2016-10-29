@@ -1,4 +1,4 @@
-;;; org-custom.el --- Org-mode setup to organize my evil plans
+;;; org-mode.el --- Org-mode setup to organize my evil plans
 ;;
 ;; Copyright © 2016 Jonathan Conde
 ;;

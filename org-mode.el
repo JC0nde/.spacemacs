@@ -122,31 +122,31 @@
   (switch-to-buffer "*scratch*"))
 
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "EN ATTENTE(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+      (quote ((sequence "À FAIRE(t)" "SUIVANT(n)" "|" "FINI(d)")
+              (sequence "EN ATTENTE(w@/!)" "INTERROMPU(h@/!)" "|" "ANNULÉ(c@/!)" "TÉLÉPHONE" "RÉUNION"))))
 
 (setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
+      (quote (("À FAIRE" :foreground "red" :weight bold)
+              ("SUIVANT" :foreground "blue" :weight bold)
+              ("FINI" :foreground "forest green" :weight bold)
               ("EN ATTENTE" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
+              ("INTERROMPU" :foreground "magenta" :weight bold)
+              ("ANNULÉ" :foreground "forest green" :weight bold)
+              ("RÉUNION" :foreground "forest green" :weight bold)
+              ("TÉLÉPHONE" :foreground "forest green" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
 
 (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
 (setq org-todo-state-tags-triggers
-      (quote (("CANCELLED" ("CANCELLED" . t))
+      (quote (("ANNULÉ" ("ANNULÉ" . t))
               ("EN ATTENTE" ("EN ATTENTE" . t))
-              ("HOLD" ("EN ATTENTE") ("HOLD" . t))
-              (done ("EN ATTENTE") ("HOLD"))
-              ("TODO" ("EN ATTENTE") ("CANCELLED") ("HOLD"))
-              ("NEXT" ("EN ATTENTE") ("CANCELLED") ("HOLD"))
-              ("DONE" ("EN ATTENTE") ("CANCELLED") ("HOLD")))))
+              ("INTERROMPU" ("EN ATTENTE") ("INTERROMPU" . t))
+              (done ("EN ATTENTE") ("INTERROMPU"))
+              ("À FAIRE" ("EN ATTENTE") ("ANNULÉ") ("INTERROMPU"))
+              ("SUIVANT" ("EN ATTENTE") ("ANNULÉ") ("INTERROMPU"))
+              ("FINI" ("EN ATTENTE") ("ANNULÉ") ("INTERROMPU")))))
 
 (setq org-directory "~/org")
 (setq org-default-notes-file "~/org/refile.org")
@@ -154,24 +154,24 @@
 ;; I use C-c c to start capture mode
 (global-set-key (kbd "C-c c") 'org-capture)
 
-;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+;; Capture templates for: À FAIRE tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/org/refile.org")
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+               "* À FAIRE %?\n%U\n%a\n" :clock-in t :clock-resume t)
               ("r" "respond" entry (file "~/org/refile.org")
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+               "* SUIVANT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file "~/org/refile.org")
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree "~/org/journal.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
               ("w" "org-protocol" entry (file "~/org/refile.org")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
+               "* À FAIRE Review %c\n%U\n" :immediate-finish t)
               ("m" "Meeting" entry (file "~/org/refile.org")
-               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+               "* RÉUNION with %? :RÉUNION:\n%U" :clock-in t :clock-resume t)
               ("p" "Phone call" entry (file "~/org/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+               "* TÉLÉPHONE %? :TÉLÉPHONE:\n%U" :clock-in t :clock-resume t)
               ("h" "Habit" entry (file "~/org/refile.org")
-               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+               "* SUIVANT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: SUIVANT\n:END:\n"))))
 
 ;; Remove empty LOGBOOK drawers on clock out
 (defun bh/remove-empty-drawer-on-clock-out ()
@@ -235,18 +235,18 @@
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
                        (org-tags-match-list-sublevels nil)))
-                (tags-todo "-CANCELLED/!"
+                (tags-todo "-ANNULÉ/!"
                            ((org-agenda-overriding-header "Stuck Projects")
                             (org-agenda-skip-function 'bh/skip-non-stuck-projects)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
-                (tags-todo "-HOLD-CANCELLED/!"
+                (tags-todo "-INTERROMPU-ANNULÉ/!"
                            ((org-agenda-overriding-header "Projects")
                             (org-agenda-skip-function 'bh/skip-non-projects)
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
-                (tags-todo "-CANCELLED/!NEXT"
+                (tags-todo "-ANNULÉ/!SUIVANT"
                            ((org-agenda-overriding-header (concat "Project Next Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -258,7 +258,7 @@
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(todo-state-down effort-up category-keep))))
-                (tags-todo "-REFILE-CANCELLED-EN ATTENTE-HOLD/!"
+                (tags-todo "-REFILE-ANNULÉ-EN ATTENTE-INTERROMPU/!"
                            ((org-agenda-overriding-header (concat "Project Subtasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -269,7 +269,7 @@
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
-                (tags-todo "-REFILE-CANCELLED-EN ATTENTE-HOLD/!"
+                (tags-todo "-REFILE-ANNULÉ-EN ATTENTE-INTERROMPU/!"
                            ((org-agenda-overriding-header (concat "Standalone Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -280,7 +280,7 @@
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
-                (tags-todo "-CANCELLED+EN ATTENTE|HOLD/!"
+                (tags-todo "-ANNULÉ+EN ATTENTE|INTERROMPU/!"
                            ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -341,12 +341,12 @@ Skips capture tasks, projects, and subprojects.
 Switch projects and subprojects from NEXT back to TODO"
   (when (not (and (boundp 'org-capture-mode) org-capture-mode))
     (cond
-     ((and (member (org-get-todo-state) (list "TODO"))
+     ((and (member (org-get-todo-state) (list "À FAIRE"))
            (bh/is-task-p))
-      "NEXT")
-     ((and (member (org-get-todo-state) (list "NEXT"))
+      "SUIVANT")
+     ((and (member (org-get-todo-state) (list "SUIVANT"))
            (bh/is-project-p))
-      "TODO"))))
+      "À FAIRE"))))
 
 (defun bh/find-project-task ()
   "Move point to the parent (project) task if any"
@@ -479,13 +479,12 @@ A prefix arg forces clock in of the default task."
 
 ;; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
-                            ("@errand" . ?e)
+                            ("@déplacement" . ?e)
                             ("@bureau" . ?b)
-                            ("@home" . ?H)
-                            ("@farm" . ?f)
+                            ("@maison" . ?H)
                             (:endgroup)
                             ("EN ATTENTE" . ?w)
-                            ("HOLD" . ?h)
+                            ("INTERROMPU" . ?h)
                             ("PERSONNEL" . ?p)
                             ("WORK" . ?W)
                             ("FARM" . ?F)
@@ -493,7 +492,7 @@ A prefix arg forces clock in of the default task."
                             ("PORTFOLIO" . ?P)
                             ("crypt" . ?E)
                             ("NOTE" . ?n)
-                            ("CANCELLED" . ?c)
+                            ("ANNULÉ" . ?c)
                             ("FLAGGED" . ??))))
 
 ;; Allow setting single tags without the menu
@@ -631,7 +630,7 @@ Callers of this function already widen the buffer view."
                  (has-next ))
             (save-excursion
               (forward-line 1)
-              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ SUIVANT " subtree-end t))
                 (unless (member "EN ATTENTE" (org-get-tags-at))
                   (setq has-next t))))
             (if has-next
@@ -650,7 +649,7 @@ Callers of this function already widen the buffer view."
                  (has-next ))
             (save-excursion
               (forward-line 1)
-              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ SUIVANT " subtree-end t))
                 (unless (member "EN ATTENTE" (org-get-tags-at))
                   (setq has-next t))))
             (if has-next
@@ -736,7 +735,7 @@ When not restricted, skip project and sub-project tasks, habits, and project rel
         subtree-end)
        ((and limit-to-project
              (bh/is-project-subtree-p)
-             (member (org-get-todo-state) (list "NEXT")))
+             (member (org-get-todo-state) (list "SUIVANT")))
         subtree-end)
        (t
         nil)))))
@@ -770,7 +769,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
        ((org-is-habit-p)
         subtree-end)
        ((and (bh/is-project-subtree-p)
-             (member (org-get-todo-state) (list "NEXT")))
+             (member (org-get-todo-state) (list "SUIVANT")))
         subtree-end)
        ((not (bh/is-project-subtree-p))
         subtree-end)
@@ -1497,7 +1496,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
         (narrow-to-region (region-beginning) (region-end))
         (untabify (point-min) (point-max))
         (goto-char (point-min))
-        (while (re-search-forward "^\\( *-\\\) \\(TODO\\|DONE\\): " (point-max) t)
+        (while (re-search-forward "^\\( *-\\\) \\(À FAIRE\\|FINI\\): " (point-max) t)
           (replace-match (concat (make-string (length (match-string 1)) ?>) " " (match-string 2) ": ")))
         (goto-char (point-min))
         (kill-ring-save (point-min) (point-max))))))
@@ -1583,8 +1582,8 @@ Late deadlines first, then scheduled, then non-late deadlines"
     (when mystate
       (save-excursion
         (while (org-up-heading-safe)
-          (when (member (nth 2 (org-heading-components)) (list "NEXT"))
-            (org-todo "TODO")))))))
+          (when (member (nth 2 (org-heading-components)) (list "SUIVANT"))
+            (org-todo "À FAIRE")))))))
 
 (add-hook 'org-after-todo-state-change-hook 'bh/mark-next-parent-tasks-todo 'append)
 (add-hook 'org-clock-in-hook 'bh/mark-next-parent-tasks-todo 'append)

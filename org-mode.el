@@ -156,21 +156,21 @@
 
 ;; Capture templates for: À FAIRE tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/org/refile.org")
+      (quote (("t" "Nouvelle tâche" entry (file "~/org/refile.org")
                "* À FAIRE %?\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("r" "respond" entry (file "~/org/refile.org")
+              ("r" "Répondre email" entry (file "~/org/refile.org")
                "* SUIVANT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file "~/org/refile.org")
+              ("n" "Prendre un note" entry (file "~/org/refile.org")
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/org/journal.org")
+              ("j" "Journal d'interruptions" entry (file+datetree "~/org/journal.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "~/org/refile.org")
+              ("w" "Org-protocol" entry (file "~/org/refile.org")
                "* À FAIRE Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file "~/org/refile.org")
+              ("m" "Réunion" entry (file "~/org/refile.org")
                "* RÉUNION with %? :RÉUNION:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file "~/org/refile.org")
+              ("p" "Appel téléphonique" entry (file "~/org/refile.org")
                "* TÉLÉPHONE %? :TÉLÉPHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file "~/org/refile.org")
+              ("h" "Habitudes" entry (file "~/org/refile.org")
                "* SUIVANT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: SUIVANT\n:END:\n"))))
 
 ;; Remove empty LOGBOOK drawers on clock out
@@ -226,8 +226,8 @@
       (quote (("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
-              ("h" "Habits" tags-todo "STYLE=\"habit\""
-               ((org-agenda-overriding-header "Habits")
+              ("h" "Habitudes" tags-todo "STYLE=\"habit\""
+               ((org-agenda-overriding-header "Habitudes")
                 (org-agenda-sorting-strategy
                  '(todo-state-down effort-up category-keep))))
               (" " "Agenda"
@@ -487,13 +487,11 @@ A prefix arg forces clock in of the default task."
                             ("INTERROMPU" . ?h)
                             ("PERSONNEL" . ?p)
                             ("WORK" . ?W)
-                            ("FARM" . ?F)
-                            ("ORG" . ?O)
                             ("PORTFOLIO" . ?P)
                             ("crypt" . ?E)
                             ("NOTE" . ?n)
                             ("ANNULÉ" . ?c)
-                            ("FLAGGED" . ??))))
+                            ("MARQUE PAGE" . ??))))
 
 ;; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))

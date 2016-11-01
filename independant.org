@@ -1,0 +1,28 @@
+#+FILETAGS: INDÉPENDANT
+* Tâches
+:PROPERTIES:
+:CATEGORY: Tâches
+:END:
+* Paye
+:PROPERTIES:
+:CATEGORY: Paye
+:END:
+* Comptabilité
+:PROPERTIES:
+:CATEGORY: Comptabilité
+:END:
+* Finances
+:PROPERTIES:
+:CATEGORY: Finances
+:END:
+* Maintenance Système
+* Maintenance Hardware
+* Recherche et développement
+:PROPERTIES:
+:CATEGORY: Recherche
+:END:
+* Notes
+:PROPERTIES:
+:CATEGORY: Notes
+:END:
+* Mots de passes

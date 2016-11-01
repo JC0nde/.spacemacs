@@ -1,0 +1,14 @@
+#+FILETAGS: PERSONNEL
+* Special Dates
+** À FAIRE dsdsd
+**  Birthdays
+**  Anniversaries
+**  Holidays
+* Finances
+* Health and Recreation
+* House Maintenance
+* Lawn and Garden Maintenance
+* Notes
+* Tasks
+* Vehicle Maintenance
+* Passwords

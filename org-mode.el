@@ -486,7 +486,7 @@ A prefix arg forces clock in of the default task."
                             ("EN ATTENTE" . ?w)
                             ("INTERROMPU" . ?h)
                             ("PERSONNEL" . ?p)
-                            ("WORK" . ?W)
+                            ("TRAVAIL" . ?W)
                             ("PORTFOLIO" . ?P)
                             ("crypt" . ?E)
                             ("NOTE" . ?n)

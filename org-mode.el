@@ -1649,6 +1649,8 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 (run-at-time "00:59" 3600 'org-save-all-org-buffers)
 
+(setq diary-file "~/diary")
+
 (provide 'org-mode)
 
 ;;; org-mode.el ends here

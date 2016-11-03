@@ -215,6 +215,9 @@
 
 (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 ;; Do not dim blocked tasks
 (setq org-agenda-dim-blocked-tasks nil)
 
@@ -1230,7 +1233,7 @@ so change the default 'F' binding in the agenda to allow both"
               (search category-up))))
 
 ;; Start the weekly agenda on Monday
-(setq org-agenda-start-on-weekday 1)
+(setq org-agenda-start-on-weekday nil)
 
 ;; Enable display of the time grid so we can see the marker for the current time
 (setq org-agenda-time-grid (quote ((daily today remove-match)

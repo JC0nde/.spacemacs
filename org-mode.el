@@ -48,8 +48,7 @@
 ;;
 (if (boundp 'org-user-agenda-files)
     (setq org-agenda-files org-user-agenda-files)
-  (setq org-agenda-files (quote ("~/org"
-                                 "~/org/refile.org"
+  (setq org-agenda-files (quote ("~/org/refile.org"
                                  "~/org/journal.org"
                                  "~/org/todo.org"
                                  "~/org/portfolio.org"

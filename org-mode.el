@@ -14,7 +14,7 @@
 
 
 ;; Some basic configuration for org-mode.
-;; Taken from the excellent Org Mode - Organize Your Life In Plain Text! -> http://doc.norang.ca/org-mode.html
+;; Taken from the excellent Org Mode - Organize Your Life In Plain Text! -> http://doc.norang.ca/org-mode.html and https://github.com/dakrone/eos/blob/master/eos-org.org
 
 
 ;;; License:
@@ -1364,8 +1364,11 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 (setq org-special-ctrl-a/e t)
 (setq org-special-ctrl-k t)
-(setq org-yank-adjusted-subtrees t)
-
+(setq org-yank-adjusted-subtrees nil)
+;; Use inline footnotes by default
+(setq org-footnote-define-inline t)
+;; Imenu should use 3 depth instead of 2
+(setq org-imenu-depth 3)
 (setq org-id-method (quote uuidgen))
 
 (setq org-deadline-warning-days 30)
@@ -1625,7 +1628,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (setq org-src-preserve-indentation nil)
 (setq org-edit-src-content-indentation 0)
 
-(setq org-catch-invisible-edits 'error)
+(setq org-catch-invisible-edits 'smart)
 
 (setq org-export-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)

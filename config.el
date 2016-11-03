@@ -27,7 +27,7 @@
 
 ;; install additional packages - add any to this list that you want to
 ;; be installed automatically
-(prelude-require-packages '(multiple-cursors ess emmet-mode golden-ratio bbdb goto-chg))
+(prelude-require-packages '(multiple-cursors ess emmet-mode golden-ratio bbdb goto-chg org-bullets))
 
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)

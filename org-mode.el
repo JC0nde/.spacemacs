@@ -53,7 +53,6 @@
                                  "~/org/todo.org"
                                  "~/org/portfolio.org"
                                  "~/org/independant.org"
-                                 "~/org/clients"
                                  "~/org/clients/mali.org"))))
 
 ;; Custom Key Bindings

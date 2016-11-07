@@ -124,4 +124,7 @@
 ;; Save whatever’s in the current (system) clipboard before
 ;; replacing it with the Emacs’ text.
 (setq save-interprogram-paste-before-kill t)
+
+(setq mouse-drag-copy-region t)
+
 ;;; config.el ends here

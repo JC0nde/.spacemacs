@@ -121,4 +121,7 @@
   (setq dired-omit-files
         (concat dired-omit-files "\\|^.DS_STORE$\\|^.projectile$")))
 
+;; Save whatever’s in the current (system) clipboard before
+;; replacing it with the Emacs’ text.
+(setq save-interprogram-paste-before-kill t)
 ;;; config.el ends here

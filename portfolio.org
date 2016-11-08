@@ -1,11 +1,58 @@
-﻿#+FILETAGS: PORTFOLIO
-* System Maintenance
-* Payroll
-* Accounting
-* Finances
-* Hardware Maintenance
-* Tasks
-* Research and Development
+#+FILETAGS: PORTFOLIO
+* Tâches
+:PROPERTIES:
+:CATEGORY: Tâches
+:END:
+* Site
+:PROPERTIES:
+:CATEGORY: Site
+:END:
+** jonathanconde.com
+
+*** Plugins
+
+** myFiles
+
+Site multimédia dédié à la famille
+
+*** CMS
+
+**** Drupal 8 
+
+*** Thème
+
+**** Bootstrap
+
+*** Plugins
+
+**** Admin toolbar
+
+
+* Maintenance
+:PROPERTIES:
+:CATEGORY: Maintenance
+:END:
+* Frais
+:PROPERTIES:
+:CATEGORY: Frais
+:END:
+* Recherche et développement
+:PROPERTIES:
+:CATEGORY: Recherche
+:END:
 * Notes
-* Purchase Order Tracking
-* Passwords
+:PROPERTIES:
+:CATEGORY: Notes
+:END:
+* Mots de passes
+:PROPERTIES:
+:CATEGORY: Passwords
+:END:
+
+
+
+
+
+
+
+

@@ -3,10 +3,14 @@
 :PROPERTIES:
 :CATEGORY: Tâches
 :END:
+* Clients
+:PROPERTIES:
+:CATEGORY: Clients
+:END:
 * Paye
 :PROPERTIES:
 :CATEGORY: Paye
-:END:
+:END:      
 * Comptabilité
 :PROPERTIES:
 :CATEGORY: Comptabilité
@@ -14,9 +18,13 @@
 * Finances
 :PROPERTIES:
 :CATEGORY: Finances
+:END:      
+* Projets
+:PROPERTIES:
+:CATEGORY: Projets
 :END:
-* Maintenance Système
-* Maintenance Hardware
+** my.Files
+** Site rencontre ( animaux )
 * Recherche et développement
 :PROPERTIES:
 :CATEGORY: Recherche
@@ -26,3 +34,6 @@
 :CATEGORY: Notes
 :END:
 * Mots de passes
+:PROPERTIES:
+:CATEGORY: Passwords
+:END:

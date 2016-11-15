@@ -30,11 +30,10 @@
              :ensure t)
 
 (setq prelude-flyspell nil)
-;; (setq ispell-program-name "/usr/local/bin/aspell")
 
 ;; install additional packages - add any to this list that you want to
 ;; be installed automatically
-(prelude-require-packages '(multiple-cursors ess emmet-mode golden-ratio bbdb goto-chg solarized-theme))
+(prelude-require-packages '( golden-ratio bbdb goto-chg solarized-theme))
 
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
@@ -76,44 +75,61 @@
 (setq prelude-guru nil)
 
 ;;Multiple-cursors
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (progn
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+    (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+    ))
 
 ;; Web-mode
-(require 'web-mode)
-(setq web-mode-markup-indent-offset 4)
-(setq web-mode-css-indent-offset 2)
-(setq web-mode-code-indent-offset 4)
-(setq web-mode-disable-autocompletion t)
-(local-set-key (kbd "RET") 'newline-and-indent)
+(use-package web-mode
+  :ensure t
+  :config
+  (progn
+    (setq web-mode-markup-indent-offset 4)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 4)
+    (setq web-mode-disable-autocompletion t)
+    ;; Disable whitespace-mode when using web-mode
+    (add-hook 'web-mode-hook (lambda () (whitespace-mode -1)))
+    (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode)) ;; - For Drupal
+    (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . php-mode)) ;; - For Drupal
+    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
+    ))
 
-;; Disable whitespace-mode when using web-mode
-(add-hook 'web-mode-hook (lambda () (whitespace-mode -1)))
-(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode)) ;; - For Drupal
-(add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . php-mode)) ;; - For Drupal
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;;Emmet
-(require 'emmet-mode)
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-(add-hook 'web-mode-hook  'emmet-mode)
-(setq emmet-move-cursor-between-quotes t)
+(use-package emmet-mode
+  :ensure t
+  :config
+  (progn
+    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+    (add-hook 'web-mode-hook  'emmet-mode)
+    (setq emmet-move-cursor-between-quotes t)
+    ))
 
 ;; go to the last change
-(require 'goto-chg)
-(global-set-key [(control ?.)] 'goto-last-change)
-(global-set-key [(control ?,)] 'goto-last-change-reverse)
-
+(use-package goto-chg
+  :ensure t
+  :config
+  (progn
+    (global-set-key [(control ?.)] 'goto-last-change)
+    (global-set-key [(control ?,)] 'goto-last-change-reverse)
+    ))
 
 ;; C-h => Backspace
 (keyboard-translate ?\C-h ?\C-?)
@@ -122,12 +138,7 @@
 ;; M-<DEL> =>
 (global-set-key (kbd "M-<DEL>") 'mark-paragraph)
 
-
 (defalias 'qrr 'query-replace-regexp)
-
-(setq ring-bell-function 'ignore)
-
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
 ;; make both fringes 4 pixels wide
 (fringe-mode 4)
@@ -157,11 +168,11 @@ vi style of % jumping to matching brace."
   "."
   (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
 
-(setq tramp-default-method "ssh")
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 (key-chord-define-global "xx" 'helm-M-x)
 (key-chord-define-global "yy" 'helm-show-kill-ring)
+
 ;; Skip files in dired
 (progn
   (setq dired-omit-verbose nil)

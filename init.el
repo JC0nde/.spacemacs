@@ -13,7 +13,8 @@
 ;;; Code:
 
 (setenv "LANG" "fr_CH.UTF-8")
-
+(set-default-coding-systems 'utf-8)
+;;Add MELPA repository for packages
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
@@ -27,13 +28,11 @@
   (package-install 'use-package))
 
 (use-package try
-  :ensure t)
-
-(setq prelude-flyspell nil)
+             :ensure t)
 
 ;; install additional packages - add any to this list that you want to
 ;; be installed automatically
-(prelude-require-packages '(emmet-mode golden-ratio bbdb goto-chg solarized-theme))
+(prelude-require-packages '(golden-ratio bbdb org-bullets))
 
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
@@ -41,13 +40,15 @@
 ;; No scroll bar
 (scroll-bar-mode -1)
 
+;;linum t
 (global-linum-mode t)
 
-;;No whitespace
+;; Disable flyspell-mode
+(setq prelude-flyspell nil)
+
+;;No whitespaces
 (setq prelude-whitespace nil)
 
-;;don't highlight the end of long lines
-(setq whitespace-line-column 99999)
 
 ;;Backups
 (setq vc-make-backup-files t)
@@ -59,7 +60,6 @@
 
 (setq backup-directory-alist '(("" . "~/.emacs.d/personal/backups/per-save")))
 (defun force-backup-of-buffer ()
-  "."
   (when (not buffer-backed-up)
     (let ((backup-directory-alist '(("" . "~/.emacs.d/personal/backups/per-session")))
           (kept-new-versions 3))
@@ -71,7 +71,7 @@
 ;; undo
 (global-set-key (kbd "C-z") 'undo)
 
-;;Guru-mode off
+;;Guru-mode to nil
 (setq prelude-guru nil)
 
 ;;Multiple-cursors
@@ -80,9 +80,9 @@
   :config
   (progn
     (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+    (global-set-key (kbd "C-,") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-.") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-,") 'mc/mark-all-like-this)
     (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
     ))
 
@@ -112,7 +112,6 @@
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
 
-
 ;;Emmet
 (use-package emmet-mode
   :ensure t
@@ -136,24 +135,17 @@
 ;; C-h => Backspace
 (keyboard-translate ?\C-h ?\C-?)
 ;; M-h => backward-kill-word
-(global-set-key (kbd "M-h") 'backward-kill-word)
-;; M-<DEL> =>
-(global-set-key (kbd "M-<DEL>") 'mark-paragraph)
+(global-set-key (kbd "M-h" ) 'backward-kill-word)
+;; M-<DEL> => mark paragraph
+(global-set-key (kbd "M-<DEL>" ) 'mark-paragraph)
 
 (defalias 'qrr 'query-replace-regexp)
-
-;; make both fringes 4 pixels wide
-(fringe-mode 4)
-(setq next-line-add-newlines t)
-
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-  (flet ((process-list ())) ad-do-it))
 
 (global-set-key (kbd "M-i") 'imenu)
 
 ;;Right meta-modifier-tweak for IOS
-(setq ns-right-alternate-modifier 'none)
+;;(setq ns-right-alternate-modifier 'none)
+
 
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis ( ARG ) if on parenthesis, otherwise insert %.
@@ -168,8 +160,8 @@ vi style of % jumping to matching brace."
 (add-hook 'isearch-mode-end-hook 'my-goto-match-beginning)
 (defun my-goto-match-beginning ()
   "."
+  (when isearch-forward (goto-char isearch-other-end))
   (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
-
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 (key-chord-define-global "xx" 'helm-M-x)

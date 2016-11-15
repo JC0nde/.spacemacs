@@ -27,13 +27,13 @@
   (package-install 'use-package))
 
 (use-package try
-             :ensure t)
+  :ensure t)
 
 (setq prelude-flyspell nil)
 
 ;; install additional packages - add any to this list that you want to
 ;; be installed automatically
-(prelude-require-packages '( golden-ratio bbdb goto-chg solarized-theme))
+(prelude-require-packages '(emmet-mode golden-ratio bbdb goto-chg solarized-theme))
 
 ;;smooth scrolling
 (setq prelude-use-smooth-scrolling t)
@@ -111,16 +111,18 @@
 
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
+
+
 ;;Emmet
 (use-package emmet-mode
   :ensure t
+  :init
+  (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+  (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+  (add-hook 'web-mode-hook  'emmet-mode)
   :config
-  (progn
-    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-    (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-    (add-hook 'web-mode-hook  'emmet-mode)
-    (setq emmet-move-cursor-between-quotes t)
-    ))
+  (setq emmet-move-cursor-between-quotes t)
+  )
 
 ;; go to the last change
 (use-package goto-chg

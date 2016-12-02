@@ -126,6 +126,24 @@
  '(js2-basic-offset 2)  
  '(js2-bounce-indent-p t)
  
+ (global-flycheck-mode)
+
+(setq-default flycheck-temp-prefix ".")
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint)))
+
+(setq flycheck-checkers '(javascript-eslint))
+;; use eslint with web-mode for vue files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+(flycheck-add-mode 'javascript-eslint 'js-mode)
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(json-jsonlist)))
+ 
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
 

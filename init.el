@@ -168,7 +168,7 @@
     ))
 
 ;; C-h => Backspace
-(keyboard-translate ?\C-h ?\C-?)
+(define-key key-translation-map [?\C-h] [?\C-?])
 ;; M-h => backward-kill-word
 (global-set-key (kbd "M-h" ) 'backward-kill-word)
 ;; M-<DEL> => mark paragraph

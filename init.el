@@ -74,6 +74,9 @@
 ;;Guru-mode to nil
 (setq prelude-guru nil)
 
+(setq mark-ring-max 6)
+(setq global-mark-ring-max 6)
+
 ;;Multiple-cursors
 (use-package multiple-cursors
   :ensure t

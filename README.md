@@ -1,3 +1,3 @@
-# My /personal/config.el
+# Johnny's .spacemacs \o/
 
-My set of emacs settings built upon the [Prelude](https://github.com/bbatsov/prelude) distribution.
+...do I have something to say about it?

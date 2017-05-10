@@ -1,5 +1,5 @@
 # Johnny's .spacemacs \o/
 
-...do I have something to say about it?
+This is my .spacemacs. There are many like it, but this one is mine.
 
 > [spacemacs](https://github.com/syl20bnr/spacemacs)
